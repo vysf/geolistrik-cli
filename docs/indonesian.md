@@ -4,7 +4,7 @@
 
 <h1 align="center">Geolistrik CLI</h1>
 <p align="center">
-Generate geoelectrical stacking chart and observation tables from the terminal, without Python.
+Hasilkan stacking chart geolistrik dan tabel observasi dari terminal.
 </p>
 
 <p align="center">
