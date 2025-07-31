@@ -1,3 +1,7 @@
+<p align="center">
+<img src="https://raw.githubusercontent.com/vysf/geolistrik-cli/refs/heads/master/docs/icon.png">
+</p>
+
 # Geolistrik CLI
 
 Aplikasi command-line untuk menghasilkan stacking chart dan tabel pengamatan metode geolistrik (WS, WN, PP, PD, DD).
@@ -22,3 +26,5 @@ Aplikasi command-line untuk menghasilkan stacking chart dan tabel pengamatan met
 
 
 <!-- nuitka --standalone --onefile --enable-plugin=pylint-warnings --enable-plugin=no-qt  --include-package=geolistrik --windows-icon-from-ico=assets/icon.ico --output-dir=build --show-modules geolistrik/__main__.py -->
+
+<!-- python -m geolistrik -->
