@@ -13,7 +13,7 @@
     <a href="https://github.com/vysf/geolistrik-cli/blob/master/LICENSE" alt="License" style="text-decoration:none;">
         <img src="https://img.shields.io/github/license/vysf/geolistrik-cli" />
     </a>
-    <a href="https://github.com/vysf/geolistrik-cli?tab=readme-ov-file#contribution" alt="Contributions" style="text-decoration:none;">
+    <a href="https://github.com/vysf/geolistrik-cli?tab=readme-ov-file#contributing" alt="Contributions" style="text-decoration:none;">
         <img src="https://img.shields.io/badge/contributions-welcome-brightgreen" />
     </a>
 </p>
