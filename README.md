@@ -4,20 +4,20 @@
 
 <h1 align="center">Geolistrik CLI</h1>
 <p align="center">
-  <!-- Badges Row -->
-  <a href="https://github.com/vysf/geolistrik-cli/releases/latest">
-    <img src="https://img.shields.io/github/v/release/vysf/geolistrik-cli?style=flat-square&logo=github" alt="Latest Release">
-  </a>
-  <a href="https://github.com/vysf/geolistrik-cli/issues">
-    <img src="https://img.shields.io/github/issues/vysf/geolistrik-cli?style=flat-square&logo=github" alt="Open Issues">
-  </a>
-  <a href="https://github.com/vysf/geolistrik-cli/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/vysf/geolistrik-cli?style=flat-square" alt="License">
-  </a>
-  <a href="https://github.com/vysf/geolistrik-cli?tab=readme-ov-file#contribution">
-    <img src="https://img.shields.io/badge/contributions-welcome-brightgreen?style=flat-square" alt="Contributors">
-  </a>
+    <a href="https://github.com/vysf/geolistrik-cli/releases/latest" alt="Latest Release">
+        <img src="https://img.shields.io/github/v/release/vysf/geolistrik-cli" />
+    </a>
+    <a href="https://github.com/vysf/geolistrik-cli/issues" alt="Open Issues">
+        <img src="https://img.shields.io/github/issues/vysf/geolistrik-cli" />
+    </a>
+    <a href="https://github.com/vysf/geolistrik-cli/blob/master/LICENSE" alt="License">
+        <img src="https://img.shields.io/github/license/vysf/geolistrik-cli" />
+    </a>
+    <a href="https://github.com/vysf/geolistrik-cli?tab=readme-ov-file#contribution" alt="Contributions">
+        <img src="https://img.shields.io/badge/contributions-welcome-brightgreen" />
+    </a>
 </p>
+
 
 <p align="center">
 Generate geoelectrical stacking chart and observation tables from the terminal.
