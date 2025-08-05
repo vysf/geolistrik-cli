@@ -16,6 +16,9 @@
     <a href="https://github.com/vysf/geolistrik-cli/blob/master/docs/indonesian.md#kontribusi" alt="Contributions">
         <img src="https://img.shields.io/badge/contributions-welcome-brightgreen" />
     </a>
+    <a href="https://github.com/vysf/geolistrik-cli/commits" alt="Last Commit" style="text-decoration:none;">
+        <img src="https://img.shields.io/github/last-commit/vysf/geolistrik-cli" />
+    </a>
 </p>
 
 <p align="center">

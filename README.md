@@ -16,6 +16,9 @@
     <a href="https://github.com/vysf/geolistrik-cli?tab=readme-ov-file#contributing" alt="Contributions" style="text-decoration:none;">
         <img src="https://img.shields.io/badge/contributions-welcome-brightgreen" />
     </a>
+    <a href="https://github.com/vysf/geolistrik-cli/commits" alt="Last Commit" style="text-decoration:none;">
+        <img src="https://img.shields.io/github/last-commit/vysf/geolistrik-cli" />
+    </a>
 </p>
 
 
