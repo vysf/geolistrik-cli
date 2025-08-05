@@ -4,6 +4,20 @@
 
 <h1 align="center">Geolistrik CLI</h1>
 <p align="center">
+  <!-- Badges Row -->
+  <a href="https://github.com/vysf/geolistrik-cli/releases/latest">
+    <img src="https://img.shields.io/github/v/release/vysf/geolistrik-cli?style=flat-square&logo=github" alt="Latest Release">
+  </a>
+  <a href="https://github.com/vysf/geolistrik-cli/issues">
+    <img src="https://img.shields.io/github/issues/vysf/geolistrik-cli?style=flat-square&logo=github" alt="Open Issues">
+  </a>
+  <a href="https://github.com/vysf/geolistrik-cli/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/vysf/geolistrik-cli?style=flat-square" alt="License">
+  </a>
+  <a href="https://github.com/vysf/geolistrik-cli?tab=readme-ov-file#contribution">
+    <img src="https://img.shields.io/badge/contributions-welcome-brightgreen?style=flat-square" alt="Contributors">
+  </a>
+<p align="center">
 Hasilkan stacking chart geolistrik dan tabel observasi dari terminal.
 </p>
 
@@ -23,6 +37,9 @@ Hasilkan stacking chart geolistrik dan tabel observasi dari terminal.
   - [Windows](#windows)
   - [Linux](#linux)
 - [Contoh Penggunaan](#contoh-penggunaan)
+   - [Membuat Stacking Chart dan Tabel Pengukuran](#membuat-stacking-chart-dan-tabel-pengukuran)
+   - [Hanya Menghasilkan Tabel Pengukuran](#hanya-menghasilkan-tabel-pengukuran)
+   - [Menyimpan ke Direktori Khusus](#menyimpan-ke-direktori-khusus)
 - [Pengembangan Lokal](#pengembangan-lokal)
 - [Kontribusi](#kontribusi)
 
@@ -37,7 +54,7 @@ Hasilkan stacking chart geolistrik dan tabel observasi dari terminal.
 - Pole-Dipole (`pd`)
 - Dipole-Dipole (`dd`)
 
-Hasil disimpan dalam `.png` dan `.txt`, dan tidak butuh Python untuk dijalankan.
+Hasil disimpan dalam `.png` dan `.xlsx`.
 
 ---
 
@@ -46,7 +63,7 @@ Hasil disimpan dalam `.png` dan `.txt`, dan tidak butuh Python untuk dijalankan.
 - Mendukung 5 konfigurasi elektroda
 - CLI dengan opsi `--no-plot`, `--outdir`
 - Ekspor grafik `.png` dan data `.txt`
-- Bisa digunakan di Windows & Linux tanpa instalasi Python
+- Bisa digunakan di Windows & Linux
 
 ---
 
@@ -113,6 +130,30 @@ geolistrik [config] [min] [max] [spacing] [--outdir DIR] [--no-plot]
 | `--version`  | Show app version                           |
 | `--about`    | Show app metadata                          |
 
+### Membuat Stacking Chart dan Tabel Pengukuran
+Secara default, perintah ini akan menghasilkan:
+- File gambar (`[config]_[min]_[max]_a[space].png`)
+- Tabel data (`[config]_[min]_[max]_a[space].xlsx`)
+
+Anda cukup menjalankan perintah dibawah ini
+```bash
+geolistrik ws 0 100 10
+```
+
+### Hanya Menghasilkan Tabel Pengukuran
+Gunakan `--no-plot` untuk menonaktifkan pembuatan grafik:
+```bash
+geolistrik ws 0 100 10 --no-plot
+```
+
+### Menyimpan ke Direktori Khusus
+Seperti yang telah dijelaskan di [Membuat Stacking Chart dan Tabel Pengukuran](#membuat-stacking-chart-dan-tabel-pengukuran), tambahkan `--outdir` untuk menentukan folder output:
+
+```bash
+geolistrik ws 0 100 10 --outdir "./my_dir"
+```
+Jangan ragu untuk mengkombinasikan dengan flag lainya.
+
 ---
 
 ### Pengembangan Lokal
@@ -137,15 +178,22 @@ geolistrik [config] [min] [max] [spacing] [--outdir DIR] [--no-plot]
    See `build.bat` or use:
 
    ```bash
-   nuitka --standalone --onefile --include-package=geolistrik --output-dir=build geolistrik/__main__.py
+   nuitka
+   --standalone
+   --onefile
+   --include-package=geolistrik
+   --windows-icon-from-ico=assets\icon.ico
+   --output-dir=build
+   geolistrik\__main__.py
    ```
 
-5. kompilasi Windows Installer:
+5. Membuat Installer Windows:
    - Requires [Inno Setup](https://jrsoftware.org/isinfo.php)
    - Run:
      ```bash
      ISCC geolistrik_setup.iss
      ```
+   Jika di Linux, hasil kompilasi Nuitka menghasilkan binary executable.
 
 ---
 

@@ -4,6 +4,22 @@
 
 <h1 align="center">Geolistrik CLI</h1>
 <p align="center">
+  <!-- Badges Row -->
+  <a href="https://github.com/vysf/geolistrik-cli/releases/latest">
+    <img src="https://img.shields.io/github/v/release/vysf/geolistrik-cli?style=flat-square&logo=github" alt="Latest Release">
+  </a>
+  <a href="https://github.com/vysf/geolistrik-cli/issues">
+    <img src="https://img.shields.io/github/issues/vysf/geolistrik-cli?style=flat-square&logo=github" alt="Open Issues">
+  </a>
+  <a href="https://github.com/vysf/geolistrik-cli/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/vysf/geolistrik-cli?style=flat-square" alt="License">
+  </a>
+  <a href="https://github.com/vysf/geolistrik-cli?tab=readme-ov-file#contribution">
+    <img src="https://img.shields.io/badge/contributions-welcome-brightgreen?style=flat-square" alt="Contributors">
+  </a>
+</p>
+
+<p align="center">
 Generate geoelectrical stacking chart and observation tables from the terminal.
 </p>
 
@@ -19,12 +35,15 @@ Generate geoelectrical stacking chart and observation tables from the terminal.
 
 - [Introduction](#introduction)
 - [Features](#features)
-- [Download & Install](#download--install)
+- [Installation Guide](#installation-guide)
   - [Windows](#windows)
   - [Linux](#linux)
-- [CLI Usage](#cli-usage)
-- [Development Guide](#development-guide)
-- [Contribution](#contribution)
+- [Usage Example](#usage-example)
+   - [Generate Stacking Chart and Measurement Table](#generate-stacking-chart-and-measurement-table)
+   - [Generate Only Measurement Tables](#generate-only-measurement-tables)
+   - [Custom Output Directory](#custom-output-directory)
+- [Local Development](#local-development)
+- [Contributing](#contributing)
 
 ---
 
@@ -38,7 +57,7 @@ Generate geoelectrical stacking chart and observation tables from the terminal.
 - Pole-Dipole (`pd`)
 - Dipole-Dipole (`dd`)
 
-It saves outputs in `.png` (chart) and `.txt` (data) formats, with no Python runtime required.
+It saves outputs in `.png` (chart) and `.txt` (data) formats.
 
 ---
 
@@ -52,7 +71,7 @@ It saves outputs in `.png` (chart) and `.txt` (data) formats, with no Python run
 
 ---
 
-## Download & Install
+## Installation Guide
 
 ### Windows
 
@@ -93,7 +112,7 @@ geolistrik ws 0 100 10 --outdir results/
 
 ---
 
-## CLI Usage
+## Usage Example
 
 ```bash
 geolistrik [config] [min] [max] [spacing] [--outdir DIR] [--no-plot]
@@ -118,9 +137,34 @@ geolistrik [config] [min] [max] [spacing] [--outdir DIR] [--no-plot]
 | `--version`  | Show app version                           |
 | `--about`    | Show app metadata                          |
 
+### Generate Stacking Chart and Measurement Table
+By default, this command produces:
+- Image file (`[config]_[min]_[max]_a[space].png`)
+- Data table (`[config]_[min]_[max]_a[space].xlsx`)
+
+Example:
+
+```bash
+geolistrik ws 0 100 10
+```
+
+### Generate Only Measurement Tables
+Use `--no-plot` to disable chart generation:
+
+```bash
+geolistrik ws 0 100 10 --no-plot
+```
+
+### Custom Output Directory
+Add `--outdir` to specify output folder:
+
+```bash
+geolistrik ws 0 100 10 --outdir "./results"
+```
+
 ---
 
-## Development Guide
+## Local Development
 
 1. Clone this repository:
    ```bash
@@ -154,7 +198,7 @@ geolistrik [config] [min] [max] [spacing] [--outdir DIR] [--no-plot]
 
 ---
 
-## Contribution
+## Contributing
 
 PRs are welcome!
 
