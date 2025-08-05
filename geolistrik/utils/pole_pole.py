@@ -37,8 +37,10 @@ def run(x1, x2, a, output_dir=".", plot=True):
     A, M, X, Y, elektroda = pole_pole(x1, x2, a)
 
     df = pd.DataFrame({
-        'A': A, 'M': M,
-        'X': X, 'Y': Y
+        'A': A,
+        'M': M,
+        'V': [None] *  len(A),
+        'I': [None] * len(A)
     })
 
     excel_name = f"pole_pole_{x1}_{x2}_a{a}.xlsx"
@@ -48,9 +50,14 @@ def run(x1, x2, a, output_dir=".", plot=True):
 
     df.to_excel(excel_path, index=False)
 
+    df_plot = pd.DataFrame({
+        'X': X,
+        'Y': Y
+    })
+
     if plot:
-        first = df[df['A'] == x1]
-        last = df[df['M'] == x2]
+        first = df_plot[df['A'] == x1]
+        last = df_plot[df['M'] == x2]
 
         plt.figure(figsize=(15, 5), facecolor='white')
         plt.scatter(X, Y, label='Datum', s=10, color='black')

@@ -37,8 +37,12 @@ def run(x1, x2, a, output_dir=".", plot=True):
     A, B, M, N, X, Y, elektroda = dipole_dipole(x1, x2, a)
 
     df = pd.DataFrame({
-        'A': A, 'B': B, 'M': M, 'N': N,
-        'X': X, 'Y': Y
+        'A': A,
+        'B': B,
+        'M': M,
+        'N': N,
+        'V': [None] *  len(A),
+        'I': [None] * len(A)
     })
 
     excel_name = f"dipole_dipole_{x1}_{x2}_a{a}.xlsx"
@@ -48,9 +52,14 @@ def run(x1, x2, a, output_dir=".", plot=True):
 
     df.to_excel(excel_path, index=False)
 
+    df_plot = pd.DataFrame({
+        'X': X,
+        'Y': Y
+    })
+
     if plot:
-        first = df[df['A'] == x1]
-        last = df[df['N'] == x2]
+        first = df_plot[df['A'] == x1]
+        last = df_plot[df['N'] == x2]
 
         plt.figure(figsize=(15, 5), facecolor='white')
         plt.scatter(X, Y, label='Datum', s=10, color='black')
