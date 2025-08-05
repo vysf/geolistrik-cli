@@ -4,16 +4,16 @@
 
 <h1 align="center">Geolistrik CLI</h1>
 <p align="center">
-    <a href="https://github.com/vysf/geolistrik-cli/releases/latest" alt="Latest Release">
+    <a href="https://github.com/vysf/geolistrik-cli/releases/latest" alt="Latest Release" style="text-decoration:none;">
         <img src="https://img.shields.io/github/v/release/vysf/geolistrik-cli" />
     </a>
-    <a href="https://github.com/vysf/geolistrik-cli/issues" alt="Open Issues">
+    <a href="https://github.com/vysf/geolistrik-cli/issues" alt="Open Issues" style="text-decoration:none;">
         <img src="https://img.shields.io/github/issues/vysf/geolistrik-cli" />
     </a>
-    <a href="https://github.com/vysf/geolistrik-cli/blob/master/LICENSE" alt="License">
+    <a href="https://github.com/vysf/geolistrik-cli/blob/master/LICENSE" alt="License" style="text-decoration:none;">
         <img src="https://img.shields.io/github/license/vysf/geolistrik-cli" />
     </a>
-    <a href="https://github.com/vysf/geolistrik-cli?tab=readme-ov-file#contribution" alt="Contributions">
+    <a href="https://github.com/vysf/geolistrik-cli?tab=readme-ov-file#contribution" alt="Contributions" style="text-decoration:none;">
         <img src="https://img.shields.io/badge/contributions-welcome-brightgreen" />
     </a>
 </p>
