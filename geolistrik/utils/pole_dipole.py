@@ -8,6 +8,13 @@ import matplotlib.pyplot as plt
 from rich.console import Console
 from rich.progress import track
 
+from geolistrik.utils.utils import (
+    save_to_excel_by_sheet,
+    mapping_by_index,
+    make_position_to_index,
+    make_index_to_position
+)
+
 console = Console()
 
 def pole_dipole(x1, x2, a):
@@ -35,10 +42,18 @@ def run(x1, x2, a, output_dir=".", plot=True):
 
     A, M, N, X, Y, elektroda = pole_dipole(x1, x2, a)
 
-    df = pd.DataFrame({
+    df_by_distance = pd.DataFrame({
         'A': A,
         'M': M,
         'N': N,
+        'V': [None] *  len(A),
+        'I': [None] * len(A)
+    })
+    
+    df_by_elctrode_num = pd.DataFrame({
+        'A': mapping_by_index(A, elektroda),
+        'M': mapping_by_index(M, elektroda),
+        'N': mapping_by_index(N, elektroda),
         'V': [None] *  len(A),
         'I': [None] * len(A)
     })
@@ -48,7 +63,11 @@ def run(x1, x2, a, output_dir=".", plot=True):
     excel_path = os.path.join(output_dir, excel_name)
     image_path = os.path.join(output_dir, image_name)
 
-    df.to_excel(excel_path, index=False)
+    save_to_excel_by_sheet(
+        filename=excel_path,
+        dfs=[df_by_distance, df_by_elctrode_num],
+        sheet_names=["By Distance", "By Electrode Numbers"]
+    )
 
     df_plot = pd.DataFrame({
         'X': X,
@@ -56,40 +75,67 @@ def run(x1, x2, a, output_dir=".", plot=True):
     })
 
     if plot:
-        first = df_plot[df['A'] == x1]
-        last = df_plot[df['N'] == x2]
+        # Siapkan data first dan last
+        first = df_plot[df_by_distance['A'] == x1]
+        last = df_plot[df_by_distance['N'] == x2]
 
-        plt.figure(figsize=(15, 5), facecolor='white')
-        plt.scatter(X, Y, label='Datum', s=10, color='black')
+        # Buat figure dan axis menggunakan subplots
+        fig, ax = plt.subplots(figsize=(15, 5), facecolor='white', layout='constrained')
 
-        for txt, x, y in zip(first.index, first['X'], first['Y']):
-            plt.annotate(f'{txt + 1}', (x, y), fontsize=8)
-        for txt, x, y in zip(last.index, last['X'], last['Y']):
-            plt.annotate(f'{txt + 1}', (x, y), fontsize=8)
+        # Scatter plot
+        ax.scatter(X, Y, label='Measurement Point', s=10, color='black')
 
-        plt.title('Stacking Chart - Pole-Dipole Configuration', fontsize=14, pad=20)
-        plt.xlabel('Electrode', fontsize=12, labelpad=15)
-        plt.ylabel('Level n', fontsize=12)
+        # Tambahkan anotasi dari first dan last
+        for txt, x, y in zip(first.index, first['X'].values, first['Y'].values):
+            ax.annotate(f'{txt + 1}', (x, y), fontsize=8)
 
-        ax = plt.gca()
+        for txt, x, y in zip(last.index, last['X'].values, last['Y'].values):
+            ax.annotate(f'{txt + 1}', (x, y), fontsize=8)
+
+        # Judul dan label
+        ax.set_title('Stacking Chart of Pole-Dipole Configuration', fontsize=14, pad=20)
+        ax.set_xlabel('Electrode Distance (m)')
+        ax.set_ylabel('Level n')
+
+        # Ubah tampilan sumbu
         ax.invert_yaxis()
         ax.xaxis.tick_top()
         ax.xaxis.set_label_position('top')
         ax.yaxis.tick_left()
+
+        # Fungsi mapping untuk secondary x-axis
+        position_to_index = make_position_to_index(a)
+        index_to_position = make_index_to_position(a)
+
+        # Secondary x-axis di bawah (bukan atas, supaya tidak tabrakan dengan yang utama)
+        secax = ax.secondary_xaxis(1.2, functions=(position_to_index, index_to_position))
+        secax.set_xlabel('Electrode Number')
+        secax.xaxis.tick_top()
+        secax.xaxis.set_label_position('top')
+
+        # Atur ticks jika elektroda tidak terlalu banyak
+        if len(elektroda) <= 30:
+            secax.set_xticks(np.arange(len(elektroda)))
+            ax.set_xticks(elektroda)
+        else:
+            secax.set_xticks([])
+            ax.set_xticks([])
+
+        # Tambahan styling sumbu
         ax.spines['right'].set_visible(False)
         ax.spines['bottom'].set_visible(False)
         ax.spines['left'].set_color('black')
         ax.spines['top'].set_color('black')
 
-        plt.grid(False)
+        # Grid dan ticks
+        ax.grid(False)
+        ax.set_yticks(Y)
 
-        plt.xticks(elektroda if len(elektroda) <= 30 else None)
-        plt.yticks(Y)
-
-        plt.legend()
-        plt.tight_layout()
-        plt.savefig(image_path)
-        plt.close()
+        # Legenda dan simpan
+        ax.legend(loc='lower right')
+        # fig.tight_layout()
+        fig.savefig(image_path)
+        plt.close(fig)
 
         console.print(f"\n[green]✔ Data saved successfully![/]")
         console.print(f"📄 Excel: [bold]{excel_path}[/]")
