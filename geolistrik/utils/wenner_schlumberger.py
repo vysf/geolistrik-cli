@@ -126,12 +126,12 @@ def run(x1, x2, a, output_dir=".", plot=True):
         secax.xaxis.set_label_position('top')
 
         # Atur ticks jika elektroda tidak terlalu banyak
-        if len(elektroda) <= 30:
+        if len(elektroda) <= 40:
             secax.set_xticks(np.arange(len(elektroda)))
             ax.set_xticks(elektroda)
-        else:
-            secax.set_xticks([])
-            ax.set_xticks([])
+
+        if max(Y) <= 30:
+            ax.set_yticks(np.unique(Y))
 
         # Tambahan styling sumbu
         ax.spines['right'].set_visible(False)
@@ -139,13 +139,8 @@ def run(x1, x2, a, output_dir=".", plot=True):
         ax.spines['left'].set_color('black')
         ax.spines['top'].set_color('black')
 
-        # Grid dan ticks
-        ax.grid(False)
-        ax.set_yticks(Y)
-
         # Legenda dan simpan
         ax.legend(loc='lower right')
-        # fig.tight_layout()
         fig.savefig(image_path)
         plt.close(fig)
 

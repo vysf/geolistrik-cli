@@ -43,23 +43,26 @@ def run(x1, x2, a, output_dir=".", plot=True):
 
     A, B, M, N, X, Y, elektroda = dipole_dipole(x1, x2, a)
 
+    measurement_points = list(range(1, len(A)+1))
+    geometry_factor = np.pi * Y * (Y + 1) * (Y + 2) * a
+
     df_by_distance = pd.DataFrame({
+        'Measurement Points': measurement_points,
+        'Levels n': Y,
         'A': A,
         'B': B,
         'M': M,
         'N': N,
         'V': [None] *  len(A),
-        'I': [None] * len(A)
+        'I': [None] * len(A),
+        'k': geometry_factor
     })
 
-    df_by_elctrode_num = pd.DataFrame({
-        'A': mapping_by_index(A, elektroda),
-        'B': mapping_by_index(B, elektroda),
-        'M': mapping_by_index(M, elektroda),
-        'N': mapping_by_index(N, elektroda),
-        'V': [None] *  len(A),
-        'I': [None] * len(A)
-    })
+    df_by_elctrode_num = df_by_distance.copy()
+    df_by_elctrode_num['A'] = mapping_by_index(A, elektroda)
+    df_by_elctrode_num['B'] = mapping_by_index(B, elektroda)
+    df_by_elctrode_num['M'] = mapping_by_index(M, elektroda)
+    df_by_elctrode_num['N'] = mapping_by_index(N, elektroda)
 
     excel_name = f"dipole_dipole_{x1}_{x2}_a{a}.xlsx"
     image_name = f"dipole_dipole_{x1}_{x2}_a{a}.png"
@@ -117,12 +120,12 @@ def run(x1, x2, a, output_dir=".", plot=True):
         secax.xaxis.set_label_position('top')
 
         # Atur ticks jika elektroda tidak terlalu banyak
-        if len(elektroda) <= 30:
+        if len(elektroda) <= 40:
             secax.set_xticks(np.arange(len(elektroda)))
             ax.set_xticks(elektroda)
-        else:
-            secax.set_xticks([])
-            ax.set_xticks([])
+        
+        if max(Y) <= 30:
+            ax.set_yticks(np.unique(Y))
 
         # Tambahan styling sumbu
         ax.spines['right'].set_visible(False)
@@ -130,13 +133,8 @@ def run(x1, x2, a, output_dir=".", plot=True):
         ax.spines['left'].set_color('black')
         ax.spines['top'].set_color('black')
 
-        # Grid dan ticks
-        ax.grid(False)
-        ax.set_yticks(Y)
-
         # Legenda dan simpan
         ax.legend(loc='lower right')
-        # fig.tight_layout()
         fig.savefig(image_path)
         plt.close(fig)
 
