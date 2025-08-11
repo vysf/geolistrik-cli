@@ -82,7 +82,7 @@ Hasil disimpan dalam `.png` dan `.xlsx`.
   ```
   C:\Program Files\Geolistrik 1.0.0   
   ```
-  ke **system PATH** secara manual.
+  ke [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/)  secara manual.
 3. Buka CMD dan ketik:
    ```cmd
    geolistrik
@@ -91,7 +91,7 @@ Hasil disimpan dalam `.png` dan `.xlsx`.
    ![welcome](welcome-message.png)
 4. Untuk uninstall:
    - uninstall lewat **Control Panel → Uninstall a Program**
-   - Hapus path yang path dari **system environment**
+   - Hapus path yang path dari [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/)
 
 #### Linux
 

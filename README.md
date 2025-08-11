@@ -85,7 +85,7 @@ It saves outputs in `.png` (chart) and `.txt` (data) formats.
    ```
    C:\Program Files\Geolistrik 1.0.0   
    ```
-   to your **system PATH** manually.
+   to your [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/) manually.
 3. Open CMD and type:
    ```cmd
    geolistrik
@@ -95,7 +95,7 @@ It saves outputs in `.png` (chart) and `.txt` (data) formats.
 
 4. To uninstall:
    - Use **Control Panel → Uninstall a Program**
-   - Remove install path from system environment if needed
+   - Remove install path from [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/)
 
 ---
 
