@@ -9,7 +9,7 @@ from rich.console import Console
 from rich.spinner import Spinner
 from rich.progress import track
 
-from geolistrik.src.utils import (
+from geolistrik.utils.utils import (
     save_to_excel_by_sheet,
     mapping_by_index,
     make_position_to_index,
