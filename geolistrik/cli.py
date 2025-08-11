@@ -2,7 +2,7 @@ import os
 import sys
 import argparse
 from geolistrik.config import APP_NAME, VERSION, AUTHOR, CONTACT, WEBSITE
-from geolistrik.utils import (
+from geolistrik.src import (
     wenner_schlumberger, wenner,
     pole_pole, pole_dipole, dipole_dipole
 )
