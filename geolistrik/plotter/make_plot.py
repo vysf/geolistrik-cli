@@ -7,12 +7,14 @@ from geolistrik.utils.utils import (
     make_index_to_position
 )
 
-def make_plot(first, last, X, Y, a, electrode_pos):
+def make_plot(first, last, X, Y, a, electrode_pos, title):
 	'''
 	argument 1: penomoran titik ukur (first, last) => pandas.Dataframe
 	argument 2: sumbu x dan y dari stacking chart
 	argument 3: data spasi a dan electrode_pos
+	argument 4: judul plot
 	'''
+	
 	# Buat figure dan axis menggunakan subplots
 	fig, ax = plt.subplots(figsize=(15, 5), facecolor='white', layout='constrained')
 
@@ -29,7 +31,7 @@ def make_plot(first, last, X, Y, a, electrode_pos):
 	ax.scatter(X, Y, label='Measurement Point', s=10, color='black')
 
 	# Judul dan label
-	ax.set_title('Stacking Chart of Wenner Configuration', fontsize=14, pad=20)
+	ax.set_title(title, fontsize=14, pad=20)
 	ax.set_xlabel('Electrode Distance (m)')
 	ax.set_ylabel('Level n')
 
