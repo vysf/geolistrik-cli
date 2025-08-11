@@ -88,7 +88,7 @@ def run(x1, x2, a, output_dir=".", plot=True):
         last = df_plot[df_by_distance['M'] == x2]
 
         # buat plot
-        fig = make_plot(first, last, X, Y, a, electrode_pos)
+        fig = make_plot(first, last, X, Y, a, electrode_pos, 'Stacking Chart of Pole-Pole Configuration')
         
         # simpan gambar plot
         save_image_plot(fig, image_path)
