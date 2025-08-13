@@ -30,6 +30,7 @@ jobs:
           pip install nuitka matplotlib pandas numpy rich python-dotenv
 
       - name: Build CLI with Nuitka
+        shell: cmd
         run: |
           nuitka --standalone --onefile ^
                  --enable-plugin=pylint-warnings ^
