@@ -1,11 +1,14 @@
 import os
 import sys
 import argparse
-from geolistrik.config import APP_NAME, VERSION, AUTHOR, CONTACT, WEBSITE
+
+from geolistrik.config import APP_NAME, VERSION, AUTHOR, CONTACT, WEBSITE, REPO
 from geolistrik.src import (
     wenner_schlumberger, wenner,
     pole_pole, pole_dipole, dipole_dipole
 )
+from geolistrik.utils.update_cli import update_cli
+from geolistrik.utils.check_update import check_update
 
 from rich.console import Console
 from rich.panel import Panel
@@ -72,19 +75,27 @@ def main():
         action="store_true", 
         help="Do not generate stacking chart image"
     )
+    parser.add_argument("--update", action="store_true", help="Update Geolistrik CLI to latest version")
 
     args = parser.parse_args()
 
     if args.version or args.V:
         print(f"{APP_NAME} v{VERSION}")
+        check_update()
         return
 
     if args.about:
         print(f"{APP_NAME}\nVersion: {VERSION}\nAuthor: {AUTHOR}\nContact: {CONTACT}\nWebsite: {WEBSITE}")
         return
+    
+    if args.update:
+        update_cli()
+        sys.exit(0)
+        return
 
     if args.config is None:
         show_welcom()
+        check_update()
         return
 
     config_map = {
