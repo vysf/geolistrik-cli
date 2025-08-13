@@ -40,6 +40,7 @@ Hasilkan stacking chart geolistrik dan tabel observasi dari terminal.
 - [Cara Instalasi](#cara-instalasi)
   - [Windows](#windows)
   - [Linux](#linux)
+- [Cara Update](#cara-update)
 - [Contoh Penggunaan](#contoh-penggunaan)
    - [Membuat Stacking Chart dan Tabel Pengukuran](#membuat-stacking-chart-dan-tabel-pengukuran)
    - [Hanya Menghasilkan Tabel Pengukuran](#hanya-menghasilkan-tabel-pengukuran)
@@ -106,6 +107,15 @@ Kemudian gunakan CLI dimana saja:
 ```bash
 geolistrik ws 0 100 10 --outdir results/
 ```
+
+---
+
+### Cara Update
+1. Cek update lewat `geolistrik` atau `geolistrik --version`
+2. Jika ada versi baru, buka: [GitHub Releases](https://github.com/vysf/geolistrik-cli/releases/latest)
+3. Download installer terbaru sesuai OS Anda
+4. Jalankan installer (Windows) atau ganti file binary (Linux)
+
 
 ---
 
