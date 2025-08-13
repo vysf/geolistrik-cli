@@ -1,12 +1,27 @@
 import os
 from dotenv import load_dotenv
 
-# Load the environment variables
+# Load .env hanya jika ada
 load_dotenv()
 
 APP_NAME = "Geolistrik CLI"
-VERSION = os.environ.get("GEOLISTRIK_VERSION", "dev") 
+
+# Ambil versi dengan urutan prioritas: .env > GitHub Actions env > default
+VERSION = (
+    os.environ.get("GEOLISTRIK_VERSION") or
+    os.environ.get("VERSION") or
+    "dev"
+)
+
 AUTHOR = "Yusuf Umar Al Hakim"
 CONTACT = "yusufumaralhakim@fmipa.untan.ac.id"
-WEBSITE = f"https://github.com/{os.environ.get("GEOLISTRIK_REPO", "vysf")}"
-REPO = {os.environ.get("GEOLISTRIK_REPO", "vysf")}
+
+# Ambil repo (format: username/repo) dengan urutan prioritas sama
+REPO = (
+    os.environ.get("GEOLISTRIK_REPO") or
+    os.environ.get("REPO") or
+    "vysf/geolistrik-cli"
+)
+
+# URL website otomatis dari REPO
+WEBSITE = f"https://github.com/{REPO}"
