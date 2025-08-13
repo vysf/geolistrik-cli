@@ -47,7 +47,8 @@ jobs:
 
       - name: Replace version in ISS
         run: |
-          (Get-Content geolistrik_setup.iss).replace("{{VERSION}}", "${{ env.VERSION }}") | Set-Content geolistrik_setup.iss
+          $version = "${{ github.ref_name }}"
+          (Get-Content geolistrik_setup.iss) -replace "{{VERSION}}", $version | Set-Content geolistrik_setup.iss
 
       - name: Build installer with Inno Setup
         run: iscc geolistrik_setup.iss
