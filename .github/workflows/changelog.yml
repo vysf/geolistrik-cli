@@ -15,6 +15,19 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Check number of tags
+        id: check_tags
+        run: |
+          TAG_COUNT=$(git tag --list | wc -l)
+          echo "tag_count=$TAG_COUNT" >> $GITHUB_ENV
+          echo "Number of tags: $TAG_COUNT"
+
+      - name: Skip if first release
+        if: env.tag_count < 2
+        run: |
+          echo "Only one tag found, skipping changelog generation."
+          exit 0
+
       - name: Generate changelog
         id: changelog
         uses: metcalfc/changelog-generator@v4.0.1
