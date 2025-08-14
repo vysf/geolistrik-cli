@@ -98,15 +98,39 @@ Hasil disimpan dalam `.png` dan `.xlsx`.
 
 📦 [Download Linux binary](https://github.com/vysf/geolistrik-cli/releases)
 
+1. Beri izin eksekusi file  
+Misalnya file ada di folder `~/Downloads`
 ```bash
-chmod +x geolistrik-linux
-sudo mv geolistrik-linux /usr/local/bin/geolistrik
+chmod +x ~/Downloads/geolistrik-linux-1.0.0.bin
+```
+
+2. Pindahkan ke folder yang ada di PATH  
+Umumnya `~/.local/bin` atau `/usr/local/bin` (butuh `sudo` untuk global install):   
+- Instalasi Global (untuk semua user)
+```bash
+sudo mv ~/Downloads/geolistrik-linux-1.0.0.bin /usr/local/bin/geolistrik
+```
+- Instalasi Lokal (hanya untuk user saat ini)   
+sebelumnya pastikan dulu `~/.local/bin` sudah ada di `$PATH`. Cek dengan:
+```bash
+echo $PATH
+```
+Kalau belum ada, tambahkan ke `.bashrc` atau `.zshrc`:
+```bash
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+```
+Namun jika `~/.local/bin` sudah ada di `$PATH`, maka bisa langsung menjalankan perintah ini:
+```bash
+mkdir -p ~/.local/bin
+mv ~/Downloads/geolistrik-linux-1.0.0.bin ~/.local/bin/geolistrik
 ```
 
 Kemudian gunakan CLI dimana saja:
 ```bash
-geolistrik ws 0 100 10 --outdir results/
+geolistrik
 ```
+Maka sama seperti diatas, kamu akan melihat `welcome banner`.
 
 ---
 
