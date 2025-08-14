@@ -9,7 +9,6 @@ APP_NAME = "Geolistrik CLI"
 # Ambil versi dengan urutan prioritas: .env > GitHub Actions env > default
 VERSION = (
     os.environ.get("GEOLISTRIK_VERSION") or
-    os.environ.get("VERSION") or
     "dev"
 )
 
