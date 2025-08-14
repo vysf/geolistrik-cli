@@ -41,7 +41,7 @@ begin
       'tambahkan path berikut ke PATH lingkungan sistem Anda:' + #13#13 +
       ExpandConstant('{app}') + #13#13 +
       'Atau jalankan langsung dengan path penuh:' + #13 +
-      '"' + ExpandConstant('{app}') + '\geolistrik-' + ExpandConstant('{#MyAppVersion}') + '.exe"',
+      '"' + ExpandConstant('{app}') + '\geolistrik' + '.exe"',
       mbInformation, MB_OK
     );
   end;
