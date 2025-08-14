@@ -1,5 +1,6 @@
 [Setup]
 #define MyAppVersion "{{VERSION}}"
+#define MyAppVersionInfo "{{VERSION_INFO}}"
 #define AppName "Geolistrik"
 
 AppName={#AppName}
@@ -13,7 +14,7 @@ OutputDir=output
 Compression=lzma
 SolidCompression=yes
 PrivilegesRequired=admin
-VersionInfoVersion={#MyAppVersion}
+VersionInfoVersion={#MyAppVersionInfo}
 VersionInfoCompany=Yusuf Umar Al Hakim
 VersionInfoDescription=Geolistrik CLI App
 VersionInfoProductName=Geolistrik
