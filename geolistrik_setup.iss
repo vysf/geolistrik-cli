@@ -6,8 +6,8 @@
 AppName={#AppName}
 AppVersion={#MyAppVersion}
 AppPublisher=Yusuf Umar Al Hakim
-DefaultDirName={pf}\{#AppName} {#MyAppVersion}
-DefaultGroupName={#AppName} {#MyAppVersion}
+DefaultDirName={pf}\{#AppName}
+DefaultGroupName={#AppName}
 UninstallDisplayIcon={app}\geolistrik.exe
 OutputBaseFilename=geolistriksetup-{#MyAppVersion}
 OutputDir=output
