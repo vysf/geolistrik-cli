@@ -22,10 +22,6 @@
 </p>
 
 <p align="center">
-Hasilkan stacking chart geolistrik dan tabel observasi dari terminal.
-</p>
-
-<p align="center">
 <a href="https://github.com/vysf/geolistrik-cli/blob/master/README.md">English</a> |
 <a href="https://github.com/vysf/geolistrik-cli/blob/master/docs/indonesian.md">Bahasa Indonesia</a>
 </p>
