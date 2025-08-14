@@ -3,116 +3,81 @@ name: Release Geolistrik CLI
 on:
   push:
     tags:
-      - 'v*.*.*' # Trigger saat push tag versi, misal v1.0.0
+      - "v*.*.*"
+
+permissions:
+  contents: write
 
 jobs:
-  build-windows:
-    name: Build Windows
-    runs-on: windows-latest
-    env:
-      REPO: vysf/geolistrik-cli
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+
     steps:
-      - name: Checkout source
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set VERSION from tag
-        run: |
-          echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
-
-      - name: Install Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install nuitka matplotlib pandas numpy rich python-dotenv
+          pip install nuitka python-dotenv matplotlib pandas numpy rich
 
-      - name: Build CLI with Nuitka
-        shell: cmd
+      # Windows build dengan Nuitka + Inno Setup
+      - name: Build Windows executable
+        if: matrix.os == 'windows-latest'
         run: |
-          nuitka --standalone --onefile --assume-yes-for-downloads ^
-                 --enable-plugin=pylint-warnings ^
-                 --enable-plugin=no-qt ^
-                 --include-package=geolistrik ^
-                 --windows-icon-from-ico=assets/icon.ico ^
-                 --output-dir=build ^
-                 geolistrik/__main__.py
-
-      - name: Setup Inno Setup
-        uses: Minionguyjpro/Inno-Setup-Action@v1.2.0
-        with:
-          path: "C:\\Program Files (x86)\\Inno Setup 6"
-
-      - name: Replace version in ISS
-        run: |
-          $rawVersion = "${{ github.ref_name }}"
-          $version = $rawVersion.TrimStart("v") # "v1.0.0" -> "1.0.0"
-          $versionInfo = "$version.0"           # jadi "1.0.0.0"
-          (Get-Content geolistrik_setup.iss) -replace "{{VERSION}}", $version | Set-Content geolistrik_setup.iss
+          $VERSION = "${{ github.ref_name }}".TrimStart("v") # "v1.0.0" -> "1.0.0"
+          $versionInfo = "$VERSION.0"                        # jadi "1.0.0.0"
+          echo "Replacing version in ISS..."
+          (Get-Content geolistrik_setup.iss) -replace "{{VERSION}}", $VERSION | Set-Content geolistrik_setup.iss
           (Get-Content geolistrik_setup.iss) -replace "{{VERSION_INFO}}", $versionInfo | Set-Content geolistrik_setup.iss
 
-      - name: Build installer with Inno Setup
-        run: iscc geolistrik_setup.iss
+          $VERSION = "${{ github.ref_name }}".TrimStart("v")
+          
+          (Get-Content geolistrik_setup.iss).Replace("{{VERSION}}", $VERSION) | Set-Content geolistrik_setup.iss
+          echo "Building with Nuitka..."
+          nuitka --standalone --onefile --assume-yes-for-downloads --enable-plugin=pylint-warnings --enable-plugin=no-qt --include-package=geolistrik --windows-icon-from-ico=assets/icon.ico --output-dir=build geolistrik/__main__.py
+          echo "Building installer with Inno Setup..."
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" geolistrik_setup.iss
+          mkdir release-files
+          mv output/geolistriksetup-$VERSION.exe release-files/
 
-      - name: Upload Windows artifact
+      # Linux build dengan Nuitka
+      - name: Build Linux executable
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "Building with Nuitka..."
+          nuitka --standalone --onefile --enable-plugin=pylint-warnings --enable-plugin=no-qt --include-package=geolistrik --output-dir=build geolistrik/__main__.py
+          mkdir release-files
+          mv build/__main__ release-files/geolistrik-linux-$VERSION
+
+      # Upload artifacts dari masing-masing OS
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: geolistriksetup-${{ env.VERSION }}.exe
-          path: output/geolistriksetup-${{ env.VERSION }}.exe
-
-  build-linux:
-    name: Build Linux
-    runs-on: ubuntu-latest
-    env:
-      REPO: vysf/geolistrik-cli
-    steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
-
-      - name: Set VERSION from tag
-        run: |
-          echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
-
-      - name: Install Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install nuitka matplotlib pandas numpy rich python-dotenv
-
-      - name: Build CLI with Nuitka
-        run: |
-          nuitka --standalone --onefile \
-                 --enable-plugin=pylint-warnings \
-                 --enable-plugin=no-qt \
-                 --include-package=geolistrik \
-                 --output-dir=build \
-                 geolistrik/__main__.py
-          mv build/__main__.bin geolistrik-linux-${VERSION}
-
-      - name: Upload Linux artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: geolistrik-linux-${{ env.VERSION }}
-          path: geolistrik-linux-${{ env.VERSION }}
+          name: release-files-${{ matrix.os }}
+          path: release-files/
 
   release:
-    name: Create GitHub Release
     runs-on: ubuntu-latest
-    needs: [build-windows, build-linux]
+    needs: build
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
           path: release-files
+          merge-multiple: true
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             release-files/geolistriksetup-*.exe
