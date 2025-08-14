@@ -32,10 +32,11 @@ jobs:
 
       - name: Update config.py version before build
         run: |
-          $VERSION= "${{ github.ref_name }}".TrimStart("v")
-          sed -i 's|VERSION = os.getenv("GEOLISTRIK_VERSION", "dev")|VERSION = "'"$VERSION"'"|' geolistrik/config.py
+          VERSION="${GITHUB_REF_NAME#v}"
+          sed -i "s|os.getenv(\"GEOLISTRIK_VERSION\", \"dev\")|os.getenv(\"GEOLISTRIK_VERSION\", \"${VERSION}\")|" geolistrik/config.py
 
       # Windows build dengan Nuitka + Inno Setup
+      # dfault shell is PowerShell, see both VERSION and $VERSION get handled
       - name: Build Windows executable
         if: matrix.os == 'windows-latest'
         run: |
