@@ -1,32 +1,35 @@
-name: Update Changelog
+name: Generate Changelog
 
 on:
   push:
     tags:
-      - "v*.*.*"
+      - 'v*.*.*'
 
 jobs:
   changelog:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
+      - name: Checkout repository with full history
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # butuh riwayat commit penuh
+          fetch-depth: 0
 
       - name: Generate changelog
-        uses: metcalfc/changelog-generator@v3.0.0
+        id: changelog
+        uses: metcalfc/changelog-generator@v4.0.1
         with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
-          sinceTag: $(git describe --tags --abbrev=0 HEAD^)
-          outputFile: CHANGELOG.md
-          futureRelease: ${{ github.ref_name }}
+          mytoken: ${{ secrets.GITHUB_TOKEN }}
+          head-ref: ${{ github.ref_name }}
           reverse: false
+
+      - name: Save changelog to file
+        run: echo "${{ steps.changelog.outputs.changelog }}" > CHANGELOG.md
 
       - name: Commit and push changelog
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git add CHANGELOG.md
           git commit -m "docs: update changelog for ${{ github.ref_name }}"
           git push
