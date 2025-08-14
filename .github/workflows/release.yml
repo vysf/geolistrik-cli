@@ -32,7 +32,7 @@ jobs:
 
       - name: Update config.py version before build
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
+          VERSION= "${{ github.ref_name }}".TrimStart("v")
           sed -i "s/^VERSION = .*/VERSION = \"$VERSION\"/" geolistrik/config.py
 
       # Windows build dengan Nuitka + Inno Setup
@@ -44,10 +44,6 @@ jobs:
           echo "Replacing version in ISS..."
           (Get-Content geolistrik_setup.iss) -replace "{{VERSION}}", $VERSION | Set-Content geolistrik_setup.iss
           (Get-Content geolistrik_setup.iss) -replace "{{VERSION_INFO}}", $versionInfo | Set-Content geolistrik_setup.iss
-
-          $VERSION = "${{ github.ref_name }}".TrimStart("v")
-          
-          (Get-Content geolistrik_setup.iss).Replace("{{VERSION}}", $VERSION) | Set-Content geolistrik_setup.iss
           echo "Building with Nuitka..."
           nuitka --standalone --onefile --assume-yes-for-downloads --enable-plugin=pylint-warnings --enable-plugin=no-qt --include-package=geolistrik --windows-icon-from-ico=assets/icon.ico --output-dir=build geolistrik/__main__.py
           echo "Building installer with Inno Setup..."
