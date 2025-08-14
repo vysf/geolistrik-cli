@@ -1,8 +1,8 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/vysf/geolistrik-cli/master/docs/icon.png" width="128">
+<img src="https://raw.githubusercontent.com/vysf/geolistrik-cli/master/docs/geolistrik-cli-banner.png" width="128">
 </p>
 
-<h1 align="center">Geolistrik CLI</h1>
+<!-- <h1 align="center">Geolistrik CLI</h1> -->
 <p align="center">
     <a href="https://github.com/vysf/geolistrik-cli/releases/latest" alt="Latest Release" style="text-decoration:none;">
         <img src="https://img.shields.io/github/v/release/vysf/geolistrik-cli" />
