@@ -9,15 +9,38 @@ permissions:
   contents: write
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set VERSION env
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
+
+      - name: Update config.py version
+        run: |
+          sed -i "s|os.getenv(\"GEOLISTRIK_VERSION\", \"dev\")|os.getenv(\"GEOLISTRIK_VERSION\", \"${VERSION}\")|" geolistrik/config.py
+      
+      - name: Upload source with updated config.py
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-updated
+          path: .
+
   build:
+    needs: prepare
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest]
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Download updated source
+        uses: actions/download-artifact@v4
+        with:
+          name: source-updated
+          path: .
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -29,11 +52,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install nuitka python-dotenv rich requests
           pip install --only-binary=:all: pandas numpy matplotlib
-
-      - name: Update config.py version before build
-        run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          sed -i "s|os.getenv(\"GEOLISTRIK_VERSION\", \"dev\")|os.getenv(\"GEOLISTRIK_VERSION\", \"${VERSION}\")|" geolistrik/config.py
 
       # Windows build dengan Nuitka + Inno Setup
       # dfault shell is PowerShell, see both VERSION and $VERSION get handled
@@ -70,8 +88,8 @@ jobs:
           path: release-files/
 
   release:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
