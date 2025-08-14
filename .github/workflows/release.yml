@@ -30,6 +30,11 @@ jobs:
           pip install nuitka python-dotenv rich requests
           pip install --only-binary=:all: pandas numpy matplotlib
 
+      - name: Update config.py version before build
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          sed -i "s/^VERSION = .*/VERSION = \"$VERSION\"/" geolistrik/config.py
+
       # Windows build dengan Nuitka + Inno Setup
       - name: Build Windows executable
         if: matrix.os == 'windows-latest'
