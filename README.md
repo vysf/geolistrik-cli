@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/vysf/geolistrik-cli/master/docs/geolistrik-cli-banner.png" width="128">
+<img src="https://raw.githubusercontent.com/vysf/geolistrik-cli/refs/heads/master/assets/geolistrik-cli-logo.png">
 </p>
 
 <!-- <h1 align="center">Geolistrik CLI</h1> -->
