@@ -10,6 +10,11 @@ permissions:
 
 jobs:
   build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+        
     steps:
       - name: Set up Python
         uses: actions/setup-python@v5
