@@ -75,9 +75,9 @@ Hasil disimpan dalam `.png` dan `.xlsx`.
 📦 [Download Installer](https://github.com/vysf/geolistrik-cli/releases)
 
 1. Jalankan installer, ikuti petunjuk. 
-2. Setelah intalaso selesai, tambahkan folder:
+2. Setelah instalasi selesai, tambahkan folder:
   ```
-  C:\Program Files\Geolistrik 1.0.0   
+  C:\Program Files\Geolistrik
   ```
   ke [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/)  secara manual.
 3. Buka CMD dan ketik:
@@ -95,38 +95,38 @@ Hasil disimpan dalam `.png` dan `.xlsx`.
 📦 [Download Linux binary](https://github.com/vysf/geolistrik-cli/releases)
 
 1. Beri izin eksekusi file  
-Misalnya file ada di folder `~/Downloads`
-```bash
-chmod +x ~/Downloads/geolistrik-linux-1.0.0.bin
-```
+   Misalnya file ada di folder `~/Downloads`
+   ```bash
+   chmod +x ~/Downloads/geolistrik-linux-1.0.0.bin
+   ```
 
 2. Pindahkan ke folder yang ada di PATH  
 Umumnya `~/.local/bin` atau `/usr/local/bin` (butuh `sudo` untuk global install):   
-- Instalasi Global (untuk semua user)
-```bash
-sudo mv ~/Downloads/geolistrik-linux-1.0.0.bin /usr/local/bin/geolistrik
-```
-- Instalasi Lokal (hanya untuk user saat ini)   
-sebelumnya pastikan dulu `~/.local/bin` sudah ada di `$PATH`. Cek dengan:
-```bash
-echo $PATH
-```
-Kalau belum ada, tambahkan ke `.bashrc` atau `.zshrc`:
-```bash
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
-```
-Namun jika `~/.local/bin` sudah ada di `$PATH`, maka bisa langsung menjalankan perintah ini:
-```bash
-mkdir -p ~/.local/bin
-mv ~/Downloads/geolistrik-linux-1.0.0.bin ~/.local/bin/geolistrik
-```
+   - Instalasi Global (untuk semua user)
+      ```bash
+      sudo mv ~/Downloads/geolistrik-linux-1.0.0.bin /usr/local/bin/geolistrik
+      ```
+   - Instalasi Lokal (hanya untuk user saat ini)   
+      sebelumnya pastikan dulu `~/.local/bin` sudah ada di `$PATH`. Cek dengan:
+      ```bash
+      echo $PATH
+      ```
+      Kalau belum ada, tambahkan ke `.bashrc` atau `.zshrc`:
+      ```bash
+      echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+      source ~/.bashrc
+      ```
+      Namun jika `~/.local/bin` sudah ada di `$PATH`, maka bisa langsung menjalankan perintah ini:
+      ```bash
+      mkdir -p ~/.local/bin
+      mv ~/Downloads/geolistrik-linux-1.0.0.bin ~/.local/bin/geolistrik
+      ```
 
-Kemudian gunakan CLI dimana saja:
-```bash
-geolistrik
-```
-Maka sama seperti diatas, kamu akan melihat `welcome banner`.
+      Kemudian gunakan CLI dimana saja:
+      ```bash
+      geolistrik
+      ```
+      Maka sama seperti diatas, kamu akan melihat `welcome banner`.
 
 ---
 
