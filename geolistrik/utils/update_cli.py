@@ -5,82 +5,78 @@ import requests
 import tempfile
 import subprocess
 import shutil
-from pathlib import Path
+from urllib.request import urlretrieve
 
-from geolistrik.config import VERSION, REPO
+from geolistrik.config import REPO, APP_NAME, VERSION as CURRENT_VERSION
 
-# Info repo
-CURRENT_VERSION = VERSION  # Atau import dari config.py
 
-def get_latest_release():
-    url = f"https://api.github.com/repos/{REPO}/releases/latest"
-    r = requests.get(url, timeout=5)
-    if r.status_code == 200:
-        data = r.json()
-        tag = data["tag_name"].lstrip("v")
-        assets = data.get("assets", [])
-        return tag, assets
-    else:
-        raise Exception(f"GitHub API error: {r.status_code}")
+def get_latest_version():
+    """Get latest version from GitHub"""
+    api_url = f"https://api.github.com/repos/{REPO}/releases/latest"
+    response = requests.get(api_url, timeout=5)
+    response.raise_for_status()
+    return response.json()["tag_name"].lstrip("v")
 
 def download_file(url, dest_path):
-    with requests.get(url, stream=True) as r:
-        r.raise_for_status()
-        with open(dest_path, "wb") as f:
-            shutil.copyfileobj(r.raw, f)
+    """Download from url to dest_path"""
+    print(f"📥 Downloading from {url} ...")
+    urlretrieve(url, dest_path)
+    print(f"📥 File successfully downloaded to {dest_path}")
+
+def update_windows(latest_version):
+    """CLI update on Windows"""
+    download_url = f"https://github.com/{REPO}/releases/download/v{latest_version}/geolistriksetup-{latest_version}.exe"
+    temp_dir = tempfile.gettempdir()
+    installer_path = os.path.join(temp_dir, f"geolistriksetup-{latest_version}.exe")
+
+    download_file(download_url, installer_path)
+
+    print("🚀 Running installer...")
+    print("ℹ️ Please follow the installer to complete the update.")
+    subprocess.run([installer_path], check=True)
+
+def update_linux(latest_version):
+    """CLI update on Linux"""
+
+    # make sure the script run with sudo
+    if os.geteuid() != 0:
+        print("⚠️ Run this command with sudo:")
+        print("   sudo geolistrik --update")
+        sys.exit(1)
+
+    download_url = f"https://github.com/{REPO}/releases/download/v{latest_version}/geolistrik-linux-{latest_version}.bin"
+    temp_dir = tempfile.gettempdir()
+    temp_file_path = os.path.join(temp_dir, f"geolistrik-linux-{latest_version}.bin")
+
+    download_file(download_url, temp_file_path)
+
+    dest_path = "/usr/local/bin/geolistrik"
+    print(f"🔄 Updating {APP_NAME} in {dest_path} ...")
+    shutil.move(temp_file_path, dest_path)
+    os.chmod(dest_path, 0o755)
+
+    print("✅ Update successfully")
 
 def update_cli():
     print("🔍 Checking for updates...")
     try:
-        latest_version, assets = get_latest_release()
-
-        if latest_version == CURRENT_VERSION:
-            print(f"✅ Already up to date (v{CURRENT_VERSION})")
-            return
-
-        print(f"⚠️ Update available: v{latest_version} (current: v{CURRENT_VERSION})")
-
-        system_os = platform.system()
-
-        # Cari asset yang sesuai OS
-        if system_os == "Windows":
-            asset = next((a for a in assets if a["name"].endswith(".exe")), None)
-            if not asset:
-                print("❌ No Windows installer found in latest release.")
-                return
-            url = asset["browser_download_url"]
-            temp_path = Path(tempfile.gettempdir()) / asset["name"]
-
-            print(f"⬇️ Downloading installer to {temp_path} ...")
-            download_file(url, temp_path)
-            print("🚀 Running installer...")
-            os.startfile(temp_path)  # Jalankan installer
-            print("ℹ️ Please follow the installer to complete the update.")
-
-        elif system_os == "Linux":
-            asset = next((a for a in assets if "linux" in a["name"].lower()), None)
-            if not asset:
-                print("❌ No Linux binary found in latest release.")
-                return
-            url = asset["browser_download_url"]
-            temp_path = Path(tempfile.gettempdir()) / asset["name"]
-
-            print(f"⬇️ Downloading binary to {temp_path} ...")
-            download_file(url, temp_path)
-
-            dest_path = Path("/usr/local/bin/geolistrik")
-            print(f"🔄 Replacing old binary at {dest_path} ...")
-            subprocess.run(["sudo", "mv", str(temp_path), str(dest_path)])
-            subprocess.run(["sudo", "chmod", "+x", str(dest_path)])
-            print("✅ Update complete.")
-
-        else:
-            print(f"❌ OS {system_os} not supported for auto-update.")
-
+        latest_version = get_latest_version()
     except Exception as e:
-        print(f"❌ Update check failed: {e}")
+        print(f"❌ Failed to check for latest version: {e}")
+        sys.exit(1)
+    
 
-# Contoh integrasi di CLI:
-# if __name__ == "__main__":
-#     if "--update" in sys.argv:
-#         update_cli()
+    if latest_version == CURRENT_VERSION:
+        print(f"✅ Already up to date (v{CURRENT_VERSION})")
+        return
+
+    print(f"⚠️  Update available: v{latest_version} (current: v{CURRENT_VERSION})")
+    
+    os_name = platform.system()
+    if os_name == "Windows":
+        update_windows(latest_version)
+    elif os_name == "Linux":
+        update_linux(latest_version)
+    else:
+        print(f"❌ OS {system_os} not supported for auto-update.")
+    
