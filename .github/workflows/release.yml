@@ -11,12 +11,6 @@ permissions:
 jobs:
   build:
     steps:
-      - name: Download updated source
-        uses: actions/download-artifact@v4
-        with:
-          name: source-updated
-          path: .
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
