@@ -174,6 +174,9 @@ Anda cukup menjalankan perintah dibawah ini
 geolistrik ws 0 100 10
 ```
 
+Bagaimana proses pengambilan data di lapangan sesuai dengan tabel yang dibuatkan adalah seperti ini:
+![stacking_chart_animation](https://raw.githubusercontent.com/vysf/geolistrik-cli/refs/heads/master/docs/stacking_chart_animation.gif)
+
 ### Hanya Menghasilkan Tabel Pengukuran
 Gunakan `--no-plot` untuk menonaktifkan pembuatan grafik:
 ```bash
