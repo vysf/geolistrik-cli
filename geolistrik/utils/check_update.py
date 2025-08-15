@@ -1,16 +1,13 @@
 import requests
-from geolistrik.config import VERSION, REPO
-
-CURRENT_VERSION = VERSION
+from geolistrik.config import REPO, VERSION as CURRENT_VERSION
 
 def check_update():
-    try:
-        url = f"https://api.github.com/repos/{REPO}/releases/latest"
-        r = requests.get(url, timeout=3)
-        if r.status_code == 200:
-            latest = r.json()["tag_name"].lstrip("v")
-            if latest != CURRENT_VERSION:
-                print(f"⚠️  Update available: {latest} (current: {CURRENT_VERSION})")
-                print(f"⬇️  Download: https://github.com/{REPO}/releases/latest")
-    except Exception:
-        pass
+    api_url = f"https://api.github.com/repos/{REPO}/releases/latest"
+    response = requests.get(api_url, timeout=5)
+    response.raise_for_status()
+    latest_version = response.json()["tag_name"].lstrip("v")
+
+    if latest_version != CURRENT_VERSION:
+        print(f"⚠️  Update available: v{latest_version} (current: v{CURRENT_VERSION})")
+        print(f"⬇️  Download: {api_url}")
+        
