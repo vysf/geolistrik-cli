@@ -49,6 +49,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
+          echo VERSION
           echo "Building with Nuitka..."
           nuitka --standalone --onefile --enable-plugin=pylint-warnings --enable-plugin=no-qt --include-package=geolistrik --output-dir=build geolistrik/__main__.py
           mkdir release-files
