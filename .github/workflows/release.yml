@@ -9,32 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  prepare:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set VERSION env
-        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
-
-      - name: Update config.py version
-        run: |
-          sed -i "s|os.getenv(\"GEOLISTRIK_VERSION\", \"dev\")|os.getenv(\"GEOLISTRIK_VERSION\", \"${VERSION}\")|" geolistrik/config.py
-      
-      - name: Upload source with updated config.py
-        uses: actions/upload-artifact@v4
-        with:
-          name: source-updated
-          path: .
-
   build:
-    needs: prepare
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest]
-
     steps:
       - name: Download updated source
         uses: actions/download-artifact@v4
@@ -54,7 +29,7 @@ jobs:
           pip install --only-binary=:all: pandas numpy matplotlib
 
       # Windows build dengan Nuitka + Inno Setup
-      # dfault shell is PowerShell, see both VERSION and $VERSION get handled
+      # default shell is PowerShell, see both VERSION and $VERSION get handled
       - name: Build Windows executable
         if: matrix.os == 'windows-latest'
         run: |
