@@ -1,9 +1,6 @@
 import os
 import numpy as np
 import pandas as pd
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 
 from rich.console import Console
 from rich.progress import track
@@ -64,9 +61,8 @@ def run(x1, x2, a, output_dir=".", plot=True):
     df_by_elctrode_num['N'] = mapping_by_index(N, electrode_pos)
 
     excel_name = f"pole_dipole_{x1}_{x2}_a{a}.xlsx"
-    image_name = f"pole_dipole_{x1}_{x2}_a{a}.png"
     excel_path = os.path.join(output_dir, excel_name)
-    image_path = os.path.join(output_dir, image_name)
+    current_excel_path = os.path.realpath(excel_path)
 
     save_to_excel_by_sheet(
         filename=excel_path,
@@ -75,6 +71,9 @@ def run(x1, x2, a, output_dir=".", plot=True):
     )
 
     if plot:
+        image_name = f"pole_dipole_{x1}_{x2}_a{a}.png"
+        image_path = os.path.join(output_dir, image_name)
+        current_image_path = os.path.realpath(image_path)
 
         # Penomoran titik ukur
         df_plot = pd.DataFrame({
@@ -93,9 +92,9 @@ def run(x1, x2, a, output_dir=".", plot=True):
         save_image_plot(fig, image_path)
 
         console.print(f"\n[green]✔ Data saved successfully![/]")
-        console.print(f"📄 Excel: [bold]{excel_path}[/]")
-        console.print(f"🖼  Chart: [bold]{image_path}[/]")
+        console.print(f"📄 Excel: [bold]{current_excel_path}[/]")
+        console.print(f"🖼  Chart: [bold]{current_image_path}[/]")
     else:
         console.print(f"\n[green]✔ Data saved successfully![/]")
-        console.print(f"📄 Excel: [bold]{excel_path}[/]")
+        console.print(f"📄 Excel: [bold]{current_excel_path}[/]")
         console.print(f"🖼  Chart: [yellow]Skipped (--no-plot)[/]")
