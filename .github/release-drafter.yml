@@ -1,0 +1,28 @@
+name-template: "v$NEXT_PATCH_VERSION"
+tag-template: "v$NEXT_PATCH_VERSION"
+
+categories:
+  - title: "### Added"
+    labels: ["feat", "feature"]
+  - title: "### Fixed"
+    labels: ["fix", "bug"]
+  - title: "### Changed"
+    labels: ["chore", "refactor"]
+  - title: "### Documentation"
+    labels: ["docs"]
+  - title: "### Style"
+    labels: ["style"]
+  - title: "### Tests"
+    labels: ["test"]
+  - title: "### CI/CD"
+    labels: ["ci", "build"]
+  - title: "### Removed"
+    labels: ["remove", "delete"]
+
+change-template: "- $TITLE by @$AUTHOR (#$NUMBER)"
+
+template: |
+  ## [$NEXT_PATCH_VERSION] - $DATE
+  $CHANGES
+
+  [$NEXT_PATCH_VERSION]: https://github.com/vysf/geolistrik-cli/releases/tag/v$NEXT_PATCH_VERSION
