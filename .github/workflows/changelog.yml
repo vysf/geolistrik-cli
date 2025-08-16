@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*.*.*'
 
+permissions:
+  contents: write
+  
 jobs:
   changelog:
     runs-on: ubuntu-latest
@@ -43,6 +46,9 @@ jobs:
           echo "${{ steps.changelog.outputs.changelog }}" > CHANGELOG.md
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin master
+          git checkout master
+          git pull origin master
           git add CHANGELOG.md
-          git commit -m "docs: update changelog for ${{ github.ref_name }}"
-          git push
+          git commit -m "docs: update changelog for ${{ github.ref_name }}" || echo "No changes to commit"
+          git push origin master
