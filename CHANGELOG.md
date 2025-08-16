@@ -1,24 +1,6 @@
-# Changelog
-All notable changes to this project will be documented in this file.
+- [912ef96](http://github.com/vysf/geolistrik-cli/commit/912ef96bc3baf21650228035b22f508c53381a10) - setup auto update for changelog
+- [d8253b6](http://github.com/vysf/geolistrik-cli/commit/d8253b609f32c25c62144e5ddc90376e8b74535c) - set version to 1.0.1
+- [8c30277](http://github.com/vysf/geolistrik-cli/commit/8c3027771a43e4238df3c15397817bb5f2cd0ad9) - add full directory name  of genereted files for clarity
+- [2b3493c](http://github.com/vysf/geolistrik-cli/commit/2b3493c62347f56f0815b9ecbe7b1ff97a36c01c) - add animation on docs
+- [ad2e9af](http://github.com/vysf/geolistrik-cli/commit/ad2e9afcb697ba6f6d13a957f46a55fc711fce8a) - add animation on how measurement table works in field
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [1.0.0] - 2025-08-13
-### Added
-- Initial public release of **Geolistrik CLI**.
-- Support for geoelectrical configurations:
-  - Wenner
-  - Wenner-Schlumberger
-  - Pole-Pole
-  - Pole-Dipole
-  - Dipole-Dipole
-- Automatic generation of stacking chart plots (saved as images).
-- Export measurement data to Excel format.
-- CLI parameters for controlling:
-  - Output directory (`--outdir`)
-  - Disable plotting (`--no-plot`)
-- Cross-platform support (Windows & Linux).
-- Integrated installer for Windows via Inno Setup.
-
-[1.0.0]: https://github.com/vysf/geolistrik-cli/releases/tag/v1.0.0
