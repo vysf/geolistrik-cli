@@ -8,11 +8,10 @@ from rich.progress import track
 
 from geolistrik.plotter.make_plot import make_plot
 from geolistrik.plotter.save_image_plot import save_image_plot
+from geolistrik.utils.send_acquisition_profiling import send_acquisition_profiling
 from geolistrik.utils.utils import (
     save_to_excel_by_sheet,
-    mapping_by_index,
-    make_position_to_index,
-    make_index_to_position
+    mapping_by_index
 )
 
 console = Console()
@@ -54,6 +53,7 @@ def run(x1, x2, a, output_dir=".", plot=True):
     df_by_distance = pd.DataFrame({
         'Measurement Points': measurement_points,
         'Levels n': Y,
+        'X-location': X,
         'a': spacing,
         'A': A,
         'M': M,
@@ -83,6 +83,9 @@ def run(x1, x2, a, output_dir=".", plot=True):
         sheet_names=["By Distance", "By Electrode Numbers"]
     )
 
+    # Send data acquisition profiling message
+    send_acquisition_profiling(x1, x2, a, Y, electrode_pos, "Wenner Alpha")
+
     # Plotting
     if plot:
         # Image file paths
@@ -101,7 +104,7 @@ def run(x1, x2, a, output_dir=".", plot=True):
         last = df_plot[df_by_distance['B'] == x2]
 
         # buat plot
-        fig = make_plot(first, last, X, Y, a, electrode_pos, 'Stacking Chart of Wenner Configuration')
+        fig = make_plot(first, last, X, Y, a, electrode_pos, 'Stacking Chart of Wenner Alpha Configuration')
         
         # simpan gambar plot
         save_image_plot(fig, image_path)

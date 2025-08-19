@@ -7,11 +7,10 @@ from rich.progress import track
 
 from geolistrik.plotter.make_plot import make_plot
 from geolistrik.plotter.save_image_plot import save_image_plot
+from geolistrik.utils.send_acquisition_profiling import send_acquisition_profiling
 from geolistrik.utils.utils import (
     save_to_excel_by_sheet,
-    mapping_by_index,
-    make_position_to_index,
-    make_index_to_position
+    mapping_by_index
 )
 
 console = Console()
@@ -49,6 +48,7 @@ def run(x1, x2, a, output_dir=".", plot=True):
     df_by_distance = pd.DataFrame({
         'Measurement Points': measurement_points,
         'Levels n': Y,
+        'X-location': X,
         'a': spacing,
         'A': A,
         'M': M,
@@ -70,6 +70,9 @@ def run(x1, x2, a, output_dir=".", plot=True):
         dfs=[df_by_distance, df_by_elctrode_num],
         sheet_names=["By Distance", "By Electrode Numbers"]
     )
+
+    # Send data acquisition profiling message
+    send_acquisition_profiling(x1, x2, a, Y, electrode_pos, "Pole-Pole")
 
     if plot:
         image_name = f"pole_pole_{x1}_{x2}_a{a}.png"
