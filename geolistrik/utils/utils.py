@@ -12,14 +12,17 @@ def mapping_by_index(conf_elctrode, elektrode):
     return np.array(indeks) + 1
 
 # Fungsi mapping untuk secondary x-axis
-def make_position_to_index(a):
-    def position_to_index(x):
-        # return x / a
-        return x / a + 1
+def make_position_to_index(electrode_pos):
+    def position_to_index(val):
+        val = np.atleast_1d(val)
+        # Anggap electrode_pos terdistribusi merata
+        index_vals = (val - electrode_pos[0]) / (electrode_pos[1] - electrode_pos[0]) + 1
+        return index_vals if val.size > 1 else index_vals[0]
     return position_to_index
 
-def make_index_to_position(a):
-    def index_to_position(x):
-        # return x * a
-        return (x - 1) * a
+def make_index_to_position(electrode_pos):
+    def index_to_position(i):
+        i = np.asarray(i, dtype=int)
+        i = np.clip(i - 1, 0, len(electrode_pos) - 1)
+        return electrode_pos[i]
     return index_to_position
