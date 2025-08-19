@@ -12,10 +12,18 @@ from geolistrik.config import REPO, APP_NAME, VERSION as CURRENT_VERSION
 
 def get_latest_version():
     """Get latest version from GitHub"""
-    api_url = f"https://api.github.com/repos/{REPO}/releases/latest"
-    response = requests.get(api_url, timeout=5)
-    response.raise_for_status()
-    return response.json()["tag_name"].lstrip("v")
+    try:
+        api_url = f"https://api.github.com/repos/{REPO}/releases/latest"
+        response = requests.get(api_url, timeout=5)
+        response.raise_for_status()
+        return response.json()["tag_name"].lstrip("v")
+    except requests.exceptions.RequestException:
+        print("❌ Unable to check for updates. Please check your internet connection.")
+        return
+    except (KeyError, ValueError):
+        print("❌ Failed to parse version info from GitHub.")
+        return
+    
 
 def download_file(url, dest_path):
     """Download from url to dest_path"""
@@ -59,12 +67,9 @@ def update_linux(latest_version):
 
 def update_cli():
     print("🔍 Checking for updates...")
-    try:
-        latest_version = get_latest_version()
-    except Exception as e:
-        print(f"❌ Failed to check for latest version: {e}")
+    latest_version = get_latest_version()
+    if latest_version is None:
         sys.exit(1)
-    
 
     if latest_version == CURRENT_VERSION:
         print(f"✅ Already up to date (v{CURRENT_VERSION})")
@@ -78,5 +83,5 @@ def update_cli():
     elif os_name == "Linux":
         update_linux(latest_version)
     else:
-        print(f"❌ OS {system_os} not supported for auto-update.")
+        print(f"❌ OS {os_name} not supported for auto-update.")
     
