@@ -56,7 +56,7 @@
 - Pole-Dipole (`pd`)
 - Dipole-Dipole (`dd`)
 
-It saves outputs in `.png` (chart) and `.txt` (data) formats.
+It saves outputs in `.png` (chart) and `.xlsx` (data) formats.
 
 ---
 
@@ -64,7 +64,7 @@ It saves outputs in `.png` (chart) and `.txt` (data) formats.
 
 ✅ Support 5 array types  
 ✅ CLI options: `--outdir`, `--no-plot`  
-✅ Output: `.png` (chart), `.txt` (data)  
+✅ Output: `.png` (chart), `.xlsx` (data)  
 ✅ Windows & Linux standalone builds  
 ✅ Easy to use for students, researchers, and engineers
 
@@ -76,10 +76,10 @@ It saves outputs in `.png` (chart) and `.txt` (data) formats.
 
 📦 [Download Installer](https://github.com/vysf/geolistrik-cli/releases)
 
-1. Run the installer and follow the wizard.
-2. After installation, add the install directory (e.g.):
+1. Run the installer and follow the instructions.
+2. After the installation is complete, manually add the following folder:
    ```
-   C:\Program Files\Geolistrik 1.0.0   
+   C:\Program Files\Geolistrik
    ```
    to your [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/) manually.
 3. Open CMD and type:
@@ -89,9 +89,9 @@ It saves outputs in `.png` (chart) and `.txt` (data) formats.
    You'll see the welcome banner:
    ![welcome](docs/welcome-message.png)
 
-4. To uninstall:
-   - Use **Control Panel → Uninstall a Program**
-   - Remove install path from [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/)
+4. Uninstall:
+   - Uninstall via **Control Panel → Uninstall a Program**
+   - Remove the path entry from the [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/)
 
 ---
 
@@ -99,15 +99,43 @@ It saves outputs in `.png` (chart) and `.txt` (data) formats.
 
 📦 [Download Linux binary](https://github.com/vysf/geolistrik-cli/releases)
 
-```bash
-chmod +x geolistrik-linux
-sudo mv geolistrik-linux /usr/local/bin/geolistrik
-```
+1. Make the file executable   
+For example, if the file is in the `~/Downloads` folder:
+   ```bash
+   chmod +x ~/Downloads/geolistrik-linux-1.0.0.bin
+   ```
 
-Then use it anywhere:
-```bash
-geolistrik ws 0 100 10 --outdir results/
-```
+2. Move the file to a directory in your PATH
+Typically this would be `~/.local/bin` (for local install) or `/usr/local/bin` (for global install).
+   - Global installation (for all users):
+      ```bash
+      sudo mv ~/Downloads/geolistrik-linux-1.0.0.bin /usr/local/bin/geolistrik
+      ```
+   - Local installation (for current user only):
+      First, ensure `~/.local/bin` is included in your `$PATH`. Check with:
+      ```bash
+      echo $PATH
+      ```
+      If it’s not included, add it to your `.bashrc` or `.zshrc`:
+      ```bash
+      echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+      source ~/.bashrc
+      ```
+      If it is already included, simply run:
+      ```bash
+      mkdir -p ~/.local/bin
+      mv ~/Downloads/geolistrik-linux-1.0.0.bin ~/.local/bin/geolistrik
+      ```
+      Now you can use the CLI from anywhere:
+      ```bash
+      geolistrik
+      ```
+      Just like on Windows, you should see a welcome banner.
+3. Uninstall   
+   Simply delete the binary from your system:
+   ```bash
+   sudo rm /usr/local/bin/geolistrik
+   ```
 
 ---
 
@@ -135,6 +163,7 @@ geolistrik [config] [min] [max] [spacing] [--outdir DIR] [--no-plot]
 | `--no-plot`  | Skip plotting `.png`, just generate data   |
 | `--version`  | Show app version                           |
 | `--about`    | Show app metadata                          |
+| `--update`   | Update app                                 |
 
 ### Generate Stacking Chart and Measurement Table
 By default, this command produces:
@@ -146,6 +175,9 @@ Example:
 ```bash
 geolistrik ws 0 100 10
 ```
+This is how the data acquisition process in the field corresponds to the table created:
+![stacking_chart_animation](https://raw.githubusercontent.com/vysf/geolistrik-cli/refs/heads/master/docs/stacking_chart_animation.gif)
+
 
 ### Generate Only Measurement Tables
 Use `--no-plot` to disable chart generation:
@@ -210,5 +242,5 @@ PRs are welcome!
 ---
 
 📫 Contact: **Yusuf Umar Al Hakim**  
-✉️ yusufumaralhakim@fmipa.untan.ac.id   
+✉️ yusufumaralhakim@gmail.com   
 🌐 [GitHub Project](https://github.com/vysf/geolistrik-cli)

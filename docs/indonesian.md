@@ -2,7 +2,6 @@
 <img src="https://raw.githubusercontent.com/vysf/geolistrik-cli/refs/heads/master/assets/geolistrik-cli-logo.png">
 </p>
 
-<h1 align="center">Geolistrik CLI</h1>
 <p align="center">
     <a href="https://github.com/vysf/geolistrik-cli/releases/latest" alt="Latest Release">
         <img src="https://img.shields.io/github/v/release/vysf/geolistrik-cli" />
@@ -63,7 +62,7 @@ Hasil disimpan dalam `.png` dan `.xlsx`.
 
 - Mendukung 5 konfigurasi elektroda
 - CLI dengan opsi `--no-plot`, `--outdir`
-- Ekspor grafik `.png` dan data `.txt`
+- Ekspor grafik `.png` dan data `.xlsx`
 - Bisa digunakan di Windows & Linux
 
 ---
@@ -86,7 +85,7 @@ Hasil disimpan dalam `.png` dan `.xlsx`.
    ```
    Kamu akan melihat welcome banner:
    ![welcome](welcome-message.png)
-4. Untuk uninstall:
+4. Uninstall:
    - uninstall lewat **Control Panel → Uninstall a Program**
    - Hapus path yang path dari [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/)
 
@@ -127,7 +126,11 @@ Umumnya `~/.local/bin` atau `/usr/local/bin` (butuh `sudo` untuk global install)
       geolistrik
       ```
       Maka sama seperti diatas, kamu akan melihat `welcome banner`.
-
+3. Uninstall
+cukup hapus `/usr/local/bin/geolistrik` dari komputer anda.
+   ```
+   sudo rm /usr/local/bin/geolistrik
+   ```
 ---
 
 ### Cara Update
@@ -163,6 +166,7 @@ geolistrik [config] [min] [max] [spacing] [--outdir DIR] [--no-plot]
 | `--no-plot`  | Skip plotting `.png`, just generate data   |
 | `--version`  | Show app version                           |
 | `--about`    | Show app metadata                          |
+| `--update`   | Update app                                 |
 
 ### Membuat Stacking Chart dan Tabel Pengukuran
 Secara default, perintah ini akan menghasilkan:
@@ -174,7 +178,7 @@ Anda cukup menjalankan perintah dibawah ini
 geolistrik ws 0 100 10
 ```
 
-Bagaimana proses pengambilan data di lapangan sesuai dengan tabel yang dibuatkan adalah seperti ini:
+Inilah bagaimana proses pengambilan data di lapangan sesuai dengan tabel yang dibuatkan adalah seperti ini:
 ![stacking_chart_animation](https://raw.githubusercontent.com/vysf/geolistrik-cli/refs/heads/master/docs/stacking_chart_animation.gif)
 
 ### Hanya Menghasilkan Tabel Pengukuran
@@ -247,5 +251,5 @@ Silakan buka *Issue* atau *Pull Request* untuk memulai.
 ---
 
 📫 Kontak: **Yusuf Umar Al Hakim**  
-✉️ yusufumaralhakim@fmipa.untan.ac.id.com  
+✉️ yusufumaralhakim@gmail.com  
 🌐 [GitHub Project](https://github.com/vysf/geolistrik-cli)
