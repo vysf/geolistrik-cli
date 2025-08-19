@@ -43,8 +43,8 @@ def make_plot(first, last, X, Y, a, electrode_pos, title):
 
 	# Menambah sumbu x kedua untuk nomor elektroda
 	# Fungsi mapping untuk secondary x-axis
-	position_to_index = make_position_to_index(a)
-	index_to_position = make_index_to_position(a)
+	position_to_index = make_position_to_index(electrode_pos)
+	index_to_position = make_index_to_position(electrode_pos)
 
 	# Secondary x-axis di bawah (bukan atas, supaya tidak tabrakan dengan yang utama)
 	secax = ax.secondary_xaxis(1.2, functions=(position_to_index, index_to_position))
@@ -52,14 +52,18 @@ def make_plot(first, last, X, Y, a, electrode_pos, title):
 	secax.xaxis.tick_top()
 	secax.xaxis.set_label_position('top')
 
+	print("xlim before save:", ax.get_xlim())
+	print("secax before save:", secax.get_xlim())
+
 	# Atur ticks jika electrode_pos tidak terlalu banyak
 	if len(electrode_pos) <= 40:
 		electrode_num = np.arange(1, len(electrode_pos) + 1)
 		secax.set_xticks(electrode_num)
 		ax.set_xticks(electrode_pos)
-
+	
 	if max(Y) <= 30:
 		ax.set_yticks(np.unique(Y))
+
 
 	# Tambahan styling sumbu
 	ax.spines['right'].set_visible(False)
