@@ -5,7 +5,7 @@ import requests
 import tempfile
 import subprocess
 import shutil
-from urllib.request import urlretrieve
+from rich.progress import Progress, BarColumn, DownloadColumn, TextColumn, TimeRemainingColumn, TransferSpeedColumn
 
 from geolistrik.config import REPO, APP_NAME, VERSION as CURRENT_VERSION
 
@@ -27,9 +27,31 @@ def get_latest_version():
 
 def download_file(url, dest_path):
     """Download from url to dest_path"""
-    print(f"📥 Downloading from {url} ...")
-    urlretrieve(url, dest_path)
-    print(f"📥 File successfully downloaded to {dest_path}")
+    try:
+        with requests.get(url, stream=True, timeout=10) as response:
+            response.raise_for_status()
+            total_length = int(response.headers.get('content-length', 0))
+
+            progress = Progress(
+                TextColumn("📥 [progress.description]{task.description}"),
+                BarColumn(),
+                DownloadColumn(),
+                TransferSpeedColumn(),
+                TimeRemainingColumn(),
+            )
+
+            task_id = progress.add_task("Downloading", total=total_length)
+
+            with progress, open(dest_path, "wb") as file:
+                for chunk in response.iter_content(chunk_size=8192):
+                    if chunk:  # filter out keep-alive chunks
+                        file.write(chunk)
+                        progress.update(task_id, advance=len(chunk))
+
+        print(f"✅ File successfully downloaded to {dest_path}")
+
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Download failed: {e}")
 
 def update_windows(latest_version):
     """CLI update on Windows"""
