@@ -89,7 +89,7 @@ It saves outputs in `.png` (chart) and `.xlsx` (data) formats.
    - Under the System Variables section, find `Path` and click `Edit`
    ![system variable section](/docs/system_variable_section.png)
    - In the Edit Environment Variable window, click New to add a new path
-   ![modify environtment variable](/docs/modify_environtment_variable.png)
+   ![modify environtment variable](/docs/modify_environtment_variable_new.png)
    - Close all dialogue boxes by clicking `OK` to save your changes
    - Restart applications or your computer to ensure the PATH changes take effect
 3. Open CMD and type:

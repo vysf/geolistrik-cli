@@ -86,7 +86,7 @@ Hasil disimpan dalam `.png` dan `.xlsx`.
    - Didalam bagian System Variables, cari `Path` dan klik `Edit`
    ![system variable section](system_variable_section.png)
    - Didalam jendela Edit Environment Variable, klik `New` untuk menambah path baru.
-   ![modify environtment variable](modify_environtment_variable.png)
+   ![modify environtment variable](modify_environtment_variable_new.png)
    - Tutup semua kota dialog dengan klik `OK` untuk menyimpan perubahan mu.
    - Restart terminal untuk memastikan perubahan PATH berlaku.
 
