@@ -75,10 +75,17 @@ Hasil disimpan dalam `.png` dan `.xlsx`.
 
 1. Jalankan installer, ikuti petunjuk. 
 2. Setelah instalasi selesai, tambahkan folder:
-  ```
-  C:\Program Files (x86)\Geolistrik
-  ```
-  ke [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/)  secara manual.
+   ```
+   C:\Program Files (x86)\Geolistrik
+   ```
+   ke [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/)  secara manual, caranya:    
+   - Klik Start, ketik "env", dan pilih `Edit the system environment variables`
+   - Dalam System Properties, klik tombol `Environment Variables…`.
+   - Didalam bagian System Variables, cari `Path` dan klik `Edit`
+   - Didalam jendela Edit Environment Variable, klik `New` untuk menambah path baru.
+   - Tutup semua kota dialog dengan klik `OK` untuk menyimpan perubahan mu.
+   - Restart terminal untuk memastikan perubahan PATH berlaku.
+
 3. Buka CMD dan ketik:
    ```cmd
    geolistrik

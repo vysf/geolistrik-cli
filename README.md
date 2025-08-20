@@ -81,7 +81,13 @@ It saves outputs in `.png` (chart) and `.xlsx` (data) formats.
    ```
    C:\Program Files (x86)\Geolistrik
    ```
-   to your [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/) manually.
+   to your [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/) manually. This the tutorial:   
+   - Click Start, type "env", and select `Edit the system environment variables`
+   - In the System Properties window, click the `Environment Variables…` button
+   - Under the System Variables section, find `Path` and click `Edit`
+   - In the Edit Environment Variable window, click New to add a new path
+   - Close all dialogue boxes by clicking `OK` to save your changes
+   - Restart applications or your computer to ensure the PATH changes take effect
 3. Open CMD and type:
    ```cmd
    geolistrik
