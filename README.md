@@ -91,7 +91,7 @@ It saves outputs in `.png` (chart) and `.xlsx` (data) formats.
    - In the Edit Environment Variable window, click New to add a new path
    ![modify environtment variable](/docs/modify_environtment_variable_new.png)
    - Close all dialogue boxes by clicking `OK` to save your changes
-   - Restart applications or your computer to ensure the PATH changes take effect
+   - Restart terminal to ensure the PATH changes take effect
 3. Open CMD and type:
    ```cmd
    geolistrik
