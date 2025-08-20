@@ -80,9 +80,13 @@ Hasil disimpan dalam `.png` dan `.xlsx`.
    ```
    ke [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/)  secara manual, caranya:    
    - Klik Start, ketik "env", dan pilih `Edit the system environment variables`
+   ![system environment variables](search_env.png)
    - Dalam System Properties, klik tombol `Environment Variables…`.
+   ![system properties](system_properties.png)
    - Didalam bagian System Variables, cari `Path` dan klik `Edit`
+   ![system variable section](system_variable_section.png)
    - Didalam jendela Edit Environment Variable, klik `New` untuk menambah path baru.
+   ![modify environtment variable](modify_environtment_variable.png)
    - Tutup semua kota dialog dengan klik `OK` untuk menyimpan perubahan mu.
    - Restart terminal untuk memastikan perubahan PATH berlaku.
 

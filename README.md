@@ -83,9 +83,13 @@ It saves outputs in `.png` (chart) and `.xlsx` (data) formats.
    ```
    to your [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/) manually. This the tutorial:   
    - Click Start, type "env", and select `Edit the system environment variables`
+   ![system environment variables](/docs/search_env.png)
    - In the System Properties window, click the `Environment Variables…` button
+   ![system properties](/docs/system_properties.png)
    - Under the System Variables section, find `Path` and click `Edit`
+   ![system variable section](/docs/system_variable_section.png)
    - In the Edit Environment Variable window, click New to add a new path
+   ![modify environtment variable](/docs/modify_environtment_variable.png)
    - Close all dialogue boxes by clicking `OK` to save your changes
    - Restart applications or your computer to ensure the PATH changes take effect
 3. Open CMD and type:
