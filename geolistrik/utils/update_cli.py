@@ -92,7 +92,7 @@ def update_cli():
     latest_version = get_latest_version()
     if latest_version is None:
         sys.exit(1)
-
+    
     if latest_version == CURRENT_VERSION:
         print(f"✅ Already up to date (v{CURRENT_VERSION})")
         return
