@@ -76,7 +76,7 @@ Hasil disimpan dalam `.png` dan `.xlsx`.
 1. Jalankan installer, ikuti petunjuk. 
 2. Setelah instalasi selesai, tambahkan folder:
   ```
-  C:\Program Files\Geolistrik
+  C:\Program Files (x86)\Geolistrik
   ```
   ke [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/)  secara manual.
 3. Buka CMD dan ketik:

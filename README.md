@@ -79,7 +79,7 @@ It saves outputs in `.png` (chart) and `.xlsx` (data) formats.
 1. Run the installer and follow the instructions.
 2. After the installation is complete, manually add the following folder:
    ```
-   C:\Program Files\Geolistrik
+   C:\Program Files (x86)\Geolistrik
    ```
    to your [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/) manually.
 3. Open CMD and type:
