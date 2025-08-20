@@ -52,9 +52,6 @@ def make_plot(first, last, X, Y, a, electrode_pos, title):
 	secax.xaxis.tick_top()
 	secax.xaxis.set_label_position('top')
 
-	print("xlim before save:", ax.get_xlim())
-	print("secax before save:", secax.get_xlim())
-
 	# Atur ticks jika electrode_pos tidak terlalu banyak
 	if len(electrode_pos) <= 40:
 		electrode_num = np.arange(1, len(electrode_pos) + 1)
