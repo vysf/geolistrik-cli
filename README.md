@@ -260,7 +260,7 @@ PRs are welcome!
 1. development flow  
 flag `-b` artinya create adan switch
 ```
-git checkout dev master
+git checkout -b dev master
 git checkout -b feature/cli-wizard
 # koding...
 git commit -m "feat: add CLI wizard command"
