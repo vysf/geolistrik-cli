@@ -254,3 +254,31 @@ PRs are welcome!
 📫 Contact: **Yusuf Umar Al Hakim**  
 ✉️ yusufumaralhakim@gmail.com   
 🌐 [GitHub Project](https://github.com/vysf/geolistrik-cli)
+
+
+## Personal Notes
+1. development flow  
+flag `-b` artinya create adan switch
+```
+git checkout dev master
+git checkout -b feature/cli-wizard
+# koding...
+git commit -m "feat: add CLI wizard command"
+git checkout dev
+git merge feature/cli-wizard
+git push origin dev
+# testing oke
+git checkout master
+git merge dev
+git tag v2.0.0
+git push origin master --tags
+
+```
+2. next update
+```
+geolistrik generate res2d --config wn --min 0 --max 100 --spacing 5 --res-value 200
+geolistrik update
+geolistrik about
+geolistrik wizard
+geolistrik --version
+```
