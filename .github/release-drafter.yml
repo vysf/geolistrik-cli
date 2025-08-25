@@ -32,7 +32,7 @@ categories:
 change-template: "- $TITLE by @$AUTHOR (#$NUMBER)"
 
 template: |
-  ## [$NEXT_PATCH_VERSION] - $DATE
+  ## [$NEXT_PATCH_VERSION]
   $CHANGES
 
   [$NEXT_PATCH_VERSION]: https://github.com/vysf/geolistrik-cli/releases/tag/v$NEXT_PATCH_VERSION
