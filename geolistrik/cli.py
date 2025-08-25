@@ -2,13 +2,10 @@ import os
 import sys
 import argparse
 
-from geolistrik.config import APP_NAME, VERSION, AUTHOR, CONTACT, WEBSITE, REPO
-from geolistrik.src import (
-    wenner_schlumberger, wenner,
-    pole_pole, pole_dipole, dipole_dipole
-)
+from geolistrik.commands import generate
 from geolistrik.utils.update_cli import update_cli
 from geolistrik.utils.check_update import check_update
+from geolistrik.config import APP_NAME, VERSION, AUTHOR, CONTACT, WEBSITE, REPO
 
 from rich.console import Console
 from rich.panel import Panel
@@ -28,7 +25,7 @@ banner = f"""
 ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝    ╚═╝   ╚═╝   ╚═╝
 """
 
-def show_welcom():
+def show_welcome():
     welcome_msg = Text()
     welcome_msg.append(banner, style="bold magenta")
     welcome_msg.append("\n\n")
@@ -54,68 +51,86 @@ def main():
     parser = argparse.ArgumentParser(
     prog="geolistrik",
     description="CLI tool for generating stacking charts and geoelectrical survey tables.",
-    epilog="Example: geolistrik ws 0 100 10 --outdir output/"
+    # epilog="Example: geolistrik ws 0 100 10 --outdir output/" # edit later
     )
 
-    parser.add_argument("config", nargs="?", help="Configuration code: ws, wn, pp, pd, dd")
-    parser.add_argument("start", nargs="?", type=float, help="Minimum electrode spacing")
-    parser.add_argument("end", nargs="?", type=float, help="Maximum electrode spacing")
-    parser.add_argument("spacing", nargs="?", type=float, help="Distance between electrodes")
+    subparsers = parser.add_subparsers(dest="command")
 
-    parser.add_argument("-v", "--version", action="store_true", help="Show application version")
-    parser.add_argument("-V", action="store_true", help="Alias for --version")
-    parser.add_argument("-about", action="store_true", help="Show application information")
-    parser.add_argument(
-        "--outdir", 
-        default=".", 
-        help="Output folder to save results (default: current folder)"
-    )
-    parser.add_argument(
-        "--no-plot", 
-        action="store_true", 
-        help="Do not generate stacking chart image"
-    )
-    parser.add_argument("--update", action="store_true", help="Update Geolistrik CLI to latest version")
+    # register commands
+    generate.register_subcommand(subparsers)
+
+    
+    parser.set_defaults(func=lambda args: (show_welcome(), check_update()))
 
     args = parser.parse_args()
+    args.func(args)
 
-    if args.version or args.V:
-        print(f"{APP_NAME} v{VERSION}")
-        check_update()
-        return
+    # if hasattr(args, 'func'):
+    #     args.func(args)
+    # else:
+    #     show_welcom()
+    #     check_update()
+    #     return
 
-    if args.about:
-        print(f"{APP_NAME}\nVersion: {VERSION}\nAuthor: {AUTHOR}\nContact: {CONTACT}\nWebsite: {WEBSITE}")
-        return
+    # parser.add_argument("config", nargs="?", help="Configuration code: ws, wn, pp, pd, dd")
+    # parser.add_argument("start", nargs="?", type=float, help="Minimum electrode spacing")
+    # parser.add_argument("end", nargs="?", type=float, help="Maximum electrode spacing")
+    # parser.add_argument("spacing", nargs="?", type=float, help="Distance between electrodes")
+
+    # parser.add_argument("-v", "--version", action="store_true", help="Show application version")
+    # parser.add_argument("-V", action="store_true", help="Alias for --version")
+    # parser.add_argument("-about", action="store_true", help="Show application information")
+    # parser.add_argument(
+    #     "--outdir", 
+    #     default=".", 
+    #     help="Output folder to save results (default: current folder)"
+    # )
+    # parser.add_argument(
+    #     "--no-plot", 
+    #     action="store_true", 
+    #     help="Do not generate stacking chart image"
+    # )
+    # parser.add_argument("--update", action="store_true", help="Update Geolistrik CLI to latest version")
+
+    # args = parser.parse_args()
+
+    # if args.version or args.V:
+    #     print(f"{APP_NAME} v{VERSION}")
+    #     check_update()
+    #     return
+
+    # if args.about:
+    #     print(f"{APP_NAME}\nVersion: {VERSION}\nAuthor: {AUTHOR}\nContact: {CONTACT}\nWebsite: {WEBSITE}")
+    #     return
     
-    if args.update:
-        update_cli()
-        sys.exit(0)
-        return
+    # if args.update:
+    #     update_cli()
+    #     sys.exit(0)
+    #     return
 
-    if args.config is None:
-        show_welcom()
-        check_update()
-        return
+    # if args.config is None:
+    #     show_welcom()
+    #     check_update()
+    #     return
 
-    config_map = {
-        "ws": wenner_schlumberger.run,
-        "wn": wenner.run,
-        "pp": pole_pole.run,
-        "pd": pole_dipole.run,
-        "dd": dipole_dipole.run,
-    }
+    # config_map = {
+    #     "ws": wenner_schlumberger.run,
+    #     "wn": wenner.run,
+    #     "pp": pole_pole.run,
+    #     "pd": pole_dipole.run,
+    #     "dd": dipole_dipole.run,
+    # }
 
-    if args.config not in config_map:
-        print("❌ Kode konfigurasi tidak valid. Gunakan: ws, wn, pp, pd, dd.")
-        return
+    # if args.config not in config_map:
+    #     print("❌ Kode konfigurasi tidak valid. Gunakan: ws, wn, pp, pd, dd.")
+    #     return
 
-    if None in (args.start, args.end, args.spacing):
-        print("❌ Argumen start, end, dan spacing wajib diisi.")
-        return
+    # if None in (args.start, args.end, args.spacing):
+    #     print("❌ Argumen start, end, dan spacing wajib diisi.")
+    #     return
 
-    # Pastikan folder output ada
-    os.makedirs(args.outdir, exist_ok=True)
+    # # Pastikan folder output ada
+    # os.makedirs(args.outdir, exist_ok=True)
 
-    # Jalankan fungsi sesuai konfigurasi dan output folder
-    config_map[args.config](args.start, args.end, args.spacing, output_dir=args.outdir, plot=not args.no_plot)
+    # # Jalankan fungsi sesuai konfigurasi dan output folder
+    # config_map[args.config](args.start, args.end, args.spacing, output_dir=args.outdir, plot=not args.no_plot)
