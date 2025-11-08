@@ -16,7 +16,7 @@ from geolistrik.utils.utils import (
 console = Console()
 
 def wenner_schlumberger(x1, x2, a):
-    electrode_pos = np.arange(x1, x2 + 1, a)
+    electrode_pos = np.arange(x1, x2 + a, a)
     A, M, N, B = [], [], [], []
     X, Y = [], []
     n = 1
