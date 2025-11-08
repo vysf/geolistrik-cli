@@ -1,6 +1,7 @@
 import os
 import sys
 import argparse
+import threading
 
 from geolistrik.commands import generate
 from geolistrik.utils.update_cli import update_cli
@@ -59,8 +60,15 @@ def main():
     # register commands
     generate.register_subcommand(subparsers)
 
-    
-    parser.set_defaults(func=lambda args: (show_welcome(), check_update()))
+    def default_func(args):
+        show_welcome()
+
+        # run check_update() in the background
+        t = threading.Thread(target=check_update, daemon=False)
+        t.start()
+        t.join(timeout=1)
+
+    parser.set_defaults(func=default_func)
 
     args = parser.parse_args()
     args.func(args)
