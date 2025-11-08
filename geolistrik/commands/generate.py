@@ -32,8 +32,7 @@ def register_subcommand(subparsers):
     generate_parser = subparsers.add_parser(
         "generate",
         help='Generate stacking chart and excel file',
-        description='Generate stacking chart and excel file for geolistrik survey.',
-        formatter_class=argparse.RawTextHelpFormatter
+        description='Generate stacking chart and excel file for geolistrik survey.'
     )
 
     generate_parser.add_argument(
