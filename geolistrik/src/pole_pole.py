@@ -16,7 +16,7 @@ from geolistrik.utils.utils import (
 console = Console()
 
 def pole_pole(x1, x2, a):
-    electrode_pos = np.arange(x1, x2 + 1, a)
+    electrode_pos = np.arange(x1, x2 + a, a)
     A, M = [], []
     X, Y = [], []
     max_n = len(electrode_pos)  # Estimasi maksimum level n

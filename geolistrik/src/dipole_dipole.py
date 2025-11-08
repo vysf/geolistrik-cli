@@ -16,7 +16,7 @@ from geolistrik.utils.utils import (
 console = Console()
 
 def dipole_dipole(x1, x2, a):
-    electrode_pos = np.arange(x1, x2 + 1, a)
+    electrode_pos = np.arange(x1, x2 + a, a)
     A, B, M, N, X, Y = [], [], [], [], [], []
     max_n = len(electrode_pos)  # estimasi max level n
 
