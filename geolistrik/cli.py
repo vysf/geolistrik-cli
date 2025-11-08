@@ -3,7 +3,7 @@ import sys
 import argparse
 import threading
 
-from geolistrik.commands import generate
+from geolistrik.commands import generate, update
 from geolistrik.utils.update_cli import update_cli
 from geolistrik.utils.check_update import check_update
 from geolistrik.config import APP_NAME, VERSION, AUTHOR, CONTACT, WEBSITE, REPO
@@ -59,6 +59,9 @@ def main():
 
     # register commands
     generate.register_subcommand(subparsers)
+
+    # update commands
+    update.register_subcommand(subparsers)
 
     def default_func(args):
         show_welcome()
