@@ -9,8 +9,12 @@ def check_update():
         latest_version = response.json()["tag_name"].lstrip("v")
 
         if latest_version != CURRENT_VERSION:
-            print(f"⚠️  Update available: v{latest_version} (current: v{CURRENT_VERSION})")
-            print(f"⬇️  Download: {api_url}")
+            try:
+                print(f"⚠️  Update available: v{latest_version} (current: v{CURRENT_VERSION})")
+                print(f"⬇️  Download: {api_url}")
+                print(f"⬇️  or run command: geolistrik update")
+            except (ValueError, OSError): 
+                pass
     except requests.exceptions.ConnectionError:
         pass
         
