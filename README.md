@@ -38,9 +38,7 @@
   - [Windows](#windows)
   - [Linux](#linux)
 - [Usage Example](#usage-example)
-   - [Generate Stacking Chart and Measurement Table](#generate-stacking-chart-and-measurement-table)
-   - [Generate Only Measurement Tables](#generate-only-measurement-tables)
-   - [Custom Output Directory](#custom-output-directory)
+- [Notes for Users Migrating from v1](#notes-for-users-migrating-from-v1)
 - [Local Development](#local-development)
 - [Contributing](#contributing)
 
@@ -62,11 +60,18 @@ It saves outputs in `.png` (chart) and `.xlsx` (data) formats.
 
 ## Features
 
-✅ Support 5 array types  
-✅ CLI options: `--outdir`, `--no-plot`  
-✅ Output: `.png` (chart), `.xlsx` (data)  
-✅ Windows & Linux standalone builds  
-✅ Easy to use for students, researchers, and engineers
+✅ Support 5 geoelectrical array configurations (Wenner, Wenner–Schlumberger, Pole–Pole, Pole–Dipole, Dipole–Dipole) \
+✅ Explicit and self-documented CLI commands (`generate` and `update`) \
+✅ Flexible input via options (safe and scalable for future versions) \
+✅ Optional chart generation (`--no-plot`) \
+✅ Custom output directory support (`--outdir`) \
+✅ Output formats:
+   1. `.png` stacking chart
+   2. `.xlsx` measurement table
+
+✅ Automatic update checking after command execution \
+✅ Designed for students, researchers, surveyors, and geophysics practitioners \ 
+✅ Cross-platform support (Windows & Linux)
 
 ---
 
@@ -151,57 +156,119 @@ Typically this would be `~/.local/bin` (for local install) or `/usr/local/bin` (
 
 ## Usage Example
 
+Geolistrik CLI uses a **command-based** structure.
+The main command for data generation is `generate`.
+
+### Basic Syntax
 ```bash
-geolistrik [config] [min] [max] [spacing] [--outdir DIR] [--no-plot]
+geolistrik generate \
+  --configuration <code> \
+  --start-position <start> \
+  --end-position <end> \
+  --spacing <spacing> \
+  [--outdir <directory>] \
+  [--no-plot] \
+  [--verbose]
+```
+or for simple command
+```
+geolistrik generate \
+  --c <code> \
+  --s <start> \
+  --e <end> \
+  --s <spacing> \
+  [-o <directory>] \
+  [--no-plot] \
+  [--verbose]
 ```
 
-### Configuration Codes:
-
-| Code | Configuration        |
-|------|----------------------|
-| ws   | Wenner-Schlumberger |
+### Configuration Codes
+| Code | Configuration       |
+| ---- | ------------------- |
 | wn   | Wenner              |
-| pp   | Pole-Pole           |
-| pd   | Pole-Dipole         |
-| dd   | Dipole-Dipole       |
-
-### Options:
-
-| Option       | Description                                |
-|--------------|--------------------------------------------|
-| `--outdir`   | Set output directory for files             |
-| `--no-plot`  | Skip plotting `.png`, just generate data   |
-| `--version`  | Show app version                           |
-| `--about`    | Show app metadata                          |
-| `--update`   | Update app                                 |
+| ws   | Wenner–Schlumberger |
+| pp   | Pole–Pole           |
+| pd   | Pole–Dipole         |
+| dd   | Dipole–Dipole       |
 
 ### Generate Stacking Chart and Measurement Table
-By default, this command produces:
-- Image file (`[config]_[min]_[max]_a[space].png`)
-- Data table (`[config]_[min]_[max]_a[space].xlsx`)
 
-Example:
+By default, this command generates:
+1. A stacking chart image (.png)
+2. A measurement table (.xlsx)
 
 ```bash
-geolistrik ws 0 100 10
+geolistrik generate \
+  --configuration ws \
+  --start-position 0 \
+  --end-position 100 \
+  --spacing 10
 ```
-This is how the data acquisition process in the field corresponds to the table created:
+or
+```bash
+geolistrik generate -c ws -s 0 -e 100 -a 10
+```
+The output files will be saved in the current directory with naming format:
+
+- `ws_0_100_a10.png`
+- `ws_0_100_a10.xlsx`
+
+This table represents the actual electrode configuration and data acquisition sequence used in the field:
+
 ![stacking_chart_animation](https://raw.githubusercontent.com/vysf/geolistrik-cli/refs/heads/master/docs/stacking_chart_animation.gif)
 
-
-### Generate Only Measurement Tables
-Use `--no-plot` to disable chart generation:
+### Generate Only Measurement Tables (No Plot)
+Use the `--no-plot` option to skip chart generation:
 
 ```bash
-geolistrik ws 0 100 10 --no-plot
+geolistrik generate \
+  --configuration ws \
+  --start-position 0 \
+  --end-position 100 \
+  --spacing 10 \
+  --no-plot
 ```
+or
+```bash
+geolistrik generate -c ws -s 0 -e 100 -a 10 --no-plot
+```
+This will generate only the `.xlsx` measurement table.
 
 ### Custom Output Directory
-Add `--outdir` to specify output folder:
+Specify a custom output directory using `--outdir`:
 
 ```bash
-geolistrik ws 0 100 10 --outdir "./results"
+geolistrik generate \
+  --configuration ws \
+  --start-position 0 \
+  --end-position 100 \
+  --spacing 10 \
+  --outdir "./results"
 ```
+or
+```bash
+geolistrik generate -c ws -s 0 -e 100 -a 10 --outdir "./results"
+```
+All generated files will be saved inside the specified directory.
+
+### Update CLI Version
+To update Geolistrik CLI to the latest version:
+```bash
+geolistrik update
+```
+To install a specific version (upgrade or downgrade):
+```bash
+geolistrik update --version v1.0.1
+```
+
+---
+## Notes for Users Migrating from v1
+
+In version v1, parameters were provided as positional arguments:
+```bash
+geolistrik 0 100 10
+```
+Starting from v2, Geolistrik CLI adopts an **explicit command-based and option-based interface** for better clarity, safety, and long-term maintainability.
 
 ---
 
@@ -252,33 +319,5 @@ PRs are welcome!
 ---
 
 📫 Contact: **Yusuf Umar Al Hakim**  
-✉️ yusufumaralhakim@gmail.com   
+✉️ yusufumaralhakim@fmipa.untan.ac.id   
 🌐 [GitHub Project](https://github.com/vysf/geolistrik-cli)
-
-
-## Personal Notes
-1. development flow  
-flag `-b` artinya create adan switch
-```
-git checkout -b dev master
-git checkout -b feature/cli-wizard
-# koding...
-git commit -m "feat: add CLI wizard command"
-git checkout dev
-git merge feature/cli-wizard
-git push origin dev
-# testing oke
-git checkout master
-git merge dev
-git tag v2.0.0
-git push origin master --tags
-
-```
-2. next update
-```
-geolistrik generate res2d --config wn --min 0 --max 100 --spacing 5 --res-value 200
-geolistrik update
-geolistrik about
-geolistrik wizard
-geolistrik --version
-```
