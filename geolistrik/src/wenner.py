@@ -40,7 +40,7 @@ def wenner(x1, x2, a):
             break
     return np.array(A), np.array(M), np.array(N), np.array(B), np.array(X), np.array(Y), electrode_pos
 
-def run(x1, x2, a, output_dir=".", plot=True):
+def run(x1, x2, a, output_dir=".", plot=True, verbose=False):
     console.print("[bold cyan]⏳ Generating Wenner configuration...[/]")
 
     # Data processing (dengan progress bar di fungsi wenner)
@@ -83,9 +83,6 @@ def run(x1, x2, a, output_dir=".", plot=True):
         sheet_names=["By Distance", "By Electrode Numbers"]
     )
 
-    # Send data acquisition profiling message
-    send_acquisition_profiling(x1, x2, a, Y, electrode_pos, "Wenner Alpha")
-
     # Plotting
     if plot:
         # Image file paths
@@ -116,3 +113,6 @@ def run(x1, x2, a, output_dir=".", plot=True):
         console.print(f"\n[green]✔ Data saved successfully![/]")
         console.print(f"📄 Excel: [bold]{current_excel_path}[/]")
         console.print(f"🖼  Chart: [yellow]Skipped (--no-plot)[/]")
+
+    # Send data acquisition profiling message
+    if verbose: send_acquisition_profiling(x1, x2, a, Y, electrode_pos, "Wenner Alpha")

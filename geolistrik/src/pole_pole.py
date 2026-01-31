@@ -36,7 +36,7 @@ def pole_pole(x1, x2, a):
 
     return np.array(A), np.array(M), np.array(X), np.array(Y), electrode_pos
 
-def run(x1, x2, a, output_dir=".", plot=True):
+def run(x1, x2, a, output_dir=".", plot=True, verbose=False):
     console.print("[bold cyan]⏳ Generating Pole-Pole configuration...[/]")
 
     A, M, X, Y, electrode_pos = pole_pole(x1, x2, a)
@@ -71,9 +71,6 @@ def run(x1, x2, a, output_dir=".", plot=True):
         sheet_names=["By Distance", "By Electrode Numbers"]
     )
 
-    # Send data acquisition profiling message
-    send_acquisition_profiling(x1, x2, a, Y, electrode_pos, "Pole-Pole")
-
     if plot:
         image_name = f"pole_pole_{x1}_{x2}_a{a}.png"
         image_path = os.path.join(output_dir, image_name)
@@ -102,3 +99,6 @@ def run(x1, x2, a, output_dir=".", plot=True):
         console.print(f"\n[green]✔ Data saved successfully![/]")
         console.print(f"📄 Excel: [bold]{current_excel_path}[/]")
         console.print(f"🖼  Chart: [yellow]Skipped (--no-plot)[/]")
+
+    # Send data acquisition profiling message
+    if verbose: send_acquisition_profiling(x1, x2, a, Y, electrode_pos, "Pole-pole")
