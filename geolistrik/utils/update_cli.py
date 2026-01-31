@@ -17,7 +17,7 @@ console = Console()
 def _fetch_github_release_tag(tag=None, retries=3, delay=2):
     """Helper function to fetch release data from GitHub"""
     if tag:
-        api_url = f"https://api.github.com/repos/{REPO}/releases/tags/{tag}"
+        api_url = f"https://api.github.com/repos/{REPO}/releases/tags/v{tag}"
     else:
         api_url = f"https://api.github.com/repos/{REPO}/releases/latest"
 
