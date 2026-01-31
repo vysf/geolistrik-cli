@@ -173,10 +173,10 @@ geolistrik generate \
 or for simple command
 ```
 geolistrik generate \
-  --c <code> \
-  --s <start> \
-  --e <end> \
-  --s <spacing> \
+  -c <code> \
+  -s <start> \
+  -e <end> \
+  -a <spacing> \
   [-o <directory>] \
   [--no-plot] \
   [--verbose]
@@ -258,7 +258,7 @@ geolistrik update
 ```
 To install a specific version (upgrade or downgrade):
 ```bash
-geolistrik update --version v1.0.1
+geolistrik update --version 1.0.1
 ```
 
 ---
