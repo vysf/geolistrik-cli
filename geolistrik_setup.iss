@@ -33,16 +33,34 @@ Name: "{group}\Uninstall Geolistrik"; Filename: "{uninstallexe}"; IconFilename: 
 
 [Code]
 procedure CurStepChanged(CurStep: TSetupStep);
+var
+  NewPath: string;
 begin
   if CurStep = ssPostInstall then
   begin
-    MsgBox(
-      'Untuk menggunakan Geolistrik CLI dari Command Prompt, ' +
-      'tambahkan path berikut ke PATH lingkungan sistem Anda:' + #13#13 +
-      ExpandConstant('{app}') + #13#13 +
-      'Atau jalankan langsung dengan path penuh:' + #13 +
-      '"' + ExpandConstant('{app}') + '\geolistrik' + '.exe"',
-      mbInformation, MB_OK
-    );
+    NewPath := ExpandConstant('{app}');
+    if not IsEnvPathVariableContaining('PATH', NewPath) then
+    begin
+      AddToPath(NewPath);
+    end;
+    MsgBox('Geolistrik CLI sudah siap digunakan dari Command Prompt. Path telah otomatis ditambahkan.',
+           mbInformation, MB_OK);
   end;
 end;
+
+function IsEnvPathVariableContaining(const VarName, Value: string): Boolean;
+var
+  EnvValue: string;
+begin
+  EnvValue := GetEnv(VarName);
+  Result := Pos(Value, EnvValue) > 0;
+end;
+
+procedure AddToPath(const Value: string);
+begin
+  RegWriteStringValue(HKEY_CURRENT_USER,
+                      'Environment',
+                      'PATH',
+                      GetEnv('PATH') + ';' + Value);
+end;
+
