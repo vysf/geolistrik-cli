@@ -23,5 +23,3 @@ def register_subcommand(subparsers):
 def handle_update(args):
   target_version = args.version
   update_cli(specific_version=target_version)
-  sys.exit(0)
-  return
