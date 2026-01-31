@@ -8,7 +8,7 @@ APP_NAME = "Geolistrik CLI"
 
 # Ambil versi dengan urutan prioritas: .env > GitHub Actions env > default
 # SELAU UBAH VERSI SETIAP AKAN RELEASE
-VERSION = os.getenv("GEOLISTRIK_VERSION", "1.0.1")
+VERSION = os.getenv("GEOLISTRIK_VERSION", "1.0.2")
 
 AUTHOR = "Yusuf Umar Al Hakim"
 CONTACT = "yusufumaralhakim@fmipa.untan.ac.id"
