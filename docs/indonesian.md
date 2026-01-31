@@ -37,9 +37,7 @@
   - [Linux](#linux)
 - [Cara Update](#cara-update)
 - [Contoh Penggunaan](#contoh-penggunaan)
-   - [Membuat Stacking Chart dan Tabel Pengukuran](#membuat-stacking-chart-dan-tabel-pengukuran)
-   - [Hanya Menghasilkan Tabel Pengukuran](#hanya-menghasilkan-tabel-pengukuran)
-   - [Menyimpan ke Direktori Khusus](#menyimpan-ke-direktori-khusus)
+- [Catatan Untuk Pengguna yang Bermigrasi Dari v1](#catatan-untuk-pengguna-yang-bermigrasi-dari-v1)
 - [Pengembangan Lokal](#pengembangan-lokal)
 - [Kontribusi](#kontribusi)
 
@@ -60,10 +58,18 @@ Hasil disimpan dalam `.png` dan `.xlsx`.
 
 ### Fitur:
 
-- Mendukung 5 konfigurasi elektroda
-- CLI dengan opsi `--no-plot`, `--outdir`
-- Ekspor grafik `.png` dan data `.xlsx`
-- Bisa digunakan di Windows & Linux
+✅ Mendukung 5 konfigurasi susunan geolistrik (Wenner, Wenner–Schlumberger, Pole–Pole, Pole–Dipole, Dipole–Dipole)\
+✅ Perintah CLI yang eksplisit dan terdokumentasi sendiri (`generate` dan `update`)\
+✅ Input fleksibel melalui opsi (aman dan dapat diskalakan untuk versi mendatang)\
+✅ Pembuatan grafik opsional (`--no-plot`)\
+✅ Dukungan direktori output kustom (`--outdir`)\
+✅ Format output:
+   1. `.png` grafik tumpukan
+   2. `.xlsx` tabel pengukuran
+
+✅ Pemeriksaan pembaruan otomatis setelah eksekusi perintah\
+✅ Dirancang untuk mahasiswa, peneliti, surveyor, dan praktisi geofisika\
+✅ Dukungan lintas platform (Windows & Linux)
 
 ---
 
@@ -153,58 +159,121 @@ cukup hapus `/usr/local/bin/geolistrik` dari komputer anda.
 
 ---
 
-### Contoh Penggunaan
+## Contoh Penggunaan
 
+Geolistrik CLI menggunakan struktur **command-based**.
+Perintah utama untuk menghasilkan data adalah `generate`.
+
+### Sintaks Dasar
 ```bash
-geolistrik [config] [min] [max] [spacing] [--outdir DIR] [--no-plot]
+geolistrik generate \
+  --configuration <code> \
+  --start-position <start> \
+  --end-position <end> \
+  --spacing <spacing> \
+  [--outdir <directory>] \
+  [--no-plot] \
+  [--verbose]
+```
+atau untuk lebih singkat
+```
+geolistrik generate \
+  --c <code> \
+  --s <start> \
+  --e <end> \
+  --s <spacing> \
+  [-o <directory>] \
+  [--no-plot] \
+  [--verbose]
 ```
 
-### Kode Konfigurasi:
-
-| Code | Configuration        |
-|------|----------------------|
-| ws   | Wenner-Schlumberger |
+### Kode Konfigurasi
+| Kode | Konfigurasi       |
+| ---- | ------------------- |
 | wn   | Wenner              |
-| pp   | Pole-Pole           |
-| pd   | Pole-Dipole         |
-| dd   | Dipole-Dipole       |
+| ws   | Wenner–Schlumberger |
+| pp   | Pole–Pole           |
+| pd   | Pole–Dipole         |
+| dd   | Dipole–Dipole       |
 
-### Options:
+### Buat Stacking Chart dan Tabel Pengukuran
 
-| Option       | Description                                |
-|--------------|--------------------------------------------|
-| `--outdir`   | Set output directory for files             |
-| `--no-plot`  | Skip plotting `.png`, just generate data   |
-| `--version`  | Show app version                           |
-| `--about`    | Show app metadata                          |
-| `--update`   | Update app                                 |
+Secara default, perintah ini menghasilkan:
+1. Sebuah gambar stacking chart (.png)
+2. Sebuah tabel pengukuran (.xlsx)
 
-### Membuat Stacking Chart dan Tabel Pengukuran
-Secara default, perintah ini akan menghasilkan:
-- File gambar (`[config]_[min]_[max]_a[space].png`)
-- Tabel data (`[config]_[min]_[max]_a[space].xlsx`)
-
-Anda cukup menjalankan perintah dibawah ini
 ```bash
-geolistrik ws 0 100 10
+geolistrik generate \
+  --configuration ws \
+  --start-position 0 \
+  --end-position 100 \
+  --spacing 10
 ```
+or
+```bash
+geolistrik generate -c ws -s 0 -e 100 -a 10
+```
+File output akan disimpan di direktori saat ini dengan format penamaan:
 
-Inilah bagaimana proses pengambilan data di lapangan sesuai dengan tabel yang dibuatkan adalah seperti ini:
+- `ws_0_100_a10.png`
+- `ws_0_100_a10.xlsx`
+
+Tabel ini mewakili konfigurasi elektroda dan urutan akuisisi data aktual yang digunakan di lapangan:
+
 ![stacking_chart_animation](https://raw.githubusercontent.com/vysf/geolistrik-cli/refs/heads/master/docs/stacking_chart_animation.gif)
 
-### Hanya Menghasilkan Tabel Pengukuran
-Gunakan `--no-plot` untuk menonaktifkan pembuatan grafik:
-```bash
-geolistrik ws 0 100 10 --no-plot
-```
-
-### Menyimpan ke Direktori Khusus
-Seperti yang telah dijelaskan di [Membuat Stacking Chart dan Tabel Pengukuran](#membuat-stacking-chart-dan-tabel-pengukuran), tambahkan `--outdir` untuk menentukan folder output:
+### Membuat Tabel Pengukuran Saja (No Plot)
+Gunakan opsi `--no-plot` untuk melewati pembuatan grafik:
 
 ```bash
-geolistrik ws 0 100 10 --outdir "./my_dir"
+geolistrik generate \
+  --configuration ws \
+  --start-position 0 \
+  --end-position 100 \
+  --spacing 10 \
+  --no-plot
 ```
-Jangan ragu untuk mengkombinasikan dengan flag lainya.
+atau
+```bash
+geolistrik generate -c ws -s 0 -e 100 -a 10 --no-plot
+```
+Ini hanya akan menghasilkan tabel pengukuran `.xlsx`.
+
+### Direktori Keluaran Khusus
+Tentukan direktori keluaran khusu menggunakan `--outdir`:
+
+```bash
+geolistrik generate \
+  --configuration ws \
+  --start-position 0 \
+  --end-position 100 \
+  --spacing 10 \
+  --outdir "./results"
+```
+atau
+```bash
+geolistrik generate -c ws -s 0 -e 100 -a 10 --outdir "./results"
+```
+Semua file yang dihasilkan akan didimpan di dalam direktori yang ditentukan.
+
+### Update CLI Version
+Untuk update Geolistrik CLI ke versi terbaru:
+```bash
+geolistrik update
+```
+Untuk isntall versi spesifik (upgrade or downgrade):
+```bash
+geolistrik update --version v1.0.1
+```
+
+---
+## Catatan Untuk Pengguna yang Bermigrasi Dari v1
+
+Pada v1, parameter diberikan sebagai argumen posisional:
+```bash
+geolistrik 0 100 10
+```
+Mulai dari versi 2, Geolistrik CLI mengadopsi **explicit command-based dan option-based interface** untuk kejelasan, keamanan, dan pemeliharaan jangka panjang yang lebih baik.
 
 ---
 
@@ -262,5 +331,5 @@ Silakan buka *Issue* atau *Pull Request* untuk memulai.
 ---
 
 📫 Kontak: **Yusuf Umar Al Hakim**  
-✉️ yusufumaralhakim@gmail.com  
+✉️ yusufumaralhakim@fmipa.untan.ac.id 
 🌐 [GitHub Project](https://github.com/vysf/geolistrik-cli)
