@@ -32,6 +32,40 @@ Name: "{group}\Command Prompt (Geolistrik)"; Filename: "{cmd}"; Parameters: "/K 
 Name: "{group}\Uninstall Geolistrik"; Filename: "{uninstallexe}"; IconFilename: "{app}\icon.ico"
 
 [Code]
+uses
+  Windows, Messages, SysUtils;
+
+{ ---- Fungsi Utility ---- }
+function IsEnvPathVariableContaining(const VarName, Value: string): Boolean;
+var
+  EnvValue: string;
+begin
+  EnvValue := GetEnv(VarName);
+  Result := Pos(LowerCase(Value), LowerCase(EnvValue)) > 0;
+end;
+
+procedure AddToPath(const Value: string);
+var
+  OldPath: string;
+begin
+  OldPath := GetEnv('PATH');
+  if (OldPath = '') or (OldPath[Length(OldPath)] <> ';') then
+    OldPath := OldPath + ';';
+  RegWriteStringValue(HKEY_CURRENT_USER,
+                      'Environment',
+                      'PATH',
+                      OldPath + Value);
+end;
+
+procedure RefreshEnvironment;
+var
+  R: Integer;
+begin
+  SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0,
+                     LPARAM(PChar('Environment')), SMTO_ABORTIFHUNG, 5000, R);
+end;
+
+{ ---- Main Post-Install ---- }
 procedure CurStepChanged(CurStep: TSetupStep);
 var
   NewPath: string;
@@ -39,28 +73,15 @@ begin
   if CurStep = ssPostInstall then
   begin
     NewPath := ExpandConstant('{app}');
+    { Tambahkan PATH hanya jika belum ada }
     if not IsEnvPathVariableContaining('PATH', NewPath) then
     begin
       AddToPath(NewPath);
+      RefreshEnvironment;
     end;
-    MsgBox('Geolistrik CLI sudah siap digunakan dari Command Prompt. Path telah otomatis ditambahkan.',
+
+    MsgBox('Geolistrik CLI sudah siap digunakan dari Command Prompt.'#13#10 +
+           'Path telah otomatis ditambahkan (untuk pengguna baru).',
            mbInformation, MB_OK);
   end;
 end;
-
-function IsEnvPathVariableContaining(const VarName, Value: string): Boolean;
-var
-  EnvValue: string;
-begin
-  EnvValue := GetEnv(VarName);
-  Result := Pos(Value, EnvValue) > 0;
-end;
-
-procedure AddToPath(const Value: string);
-begin
-  RegWriteStringValue(HKEY_CURRENT_USER,
-                      'Environment',
-                      'PATH',
-                      GetEnv('PATH') + ';' + Value);
-end;
-
