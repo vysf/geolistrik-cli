@@ -23,6 +23,5 @@ jobs:
         uses: release-drafter/release-drafter@v5
         with:
           config-name: release-drafter.yml
-          tag: ${{ github.event.inputs.version_tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

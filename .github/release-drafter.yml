@@ -1,6 +1,16 @@
 name-template: "v$RESOLVED_VERSION"
 tag-template: "v$RESOLVED_VERSION"
-
+version-resolver:
+  major:
+    labels:
+      - 'major'
+  minor:
+    labels:
+      - 'minor'
+  patch:
+    labels:
+      - 'patch'
+  default: patch
 categories:
   - title: "### Added"
     labels: 
@@ -32,7 +42,7 @@ categories:
 change-template: "- $TITLE by @$AUTHOR (#$NUMBER)"
 
 template: |
-  ## $NAME
+  ## $RESOLVED_VERSION
   $CHANGES
 
-  [$NAME]: https://github.com/$OWNER/$REPOSITORY/releases/tag/v$RESOLVED_VERSION
+  [$RESOLVED_VERSION]: https://github.com/$OWNER/$REPOSITORY/releases/tag/v$RESOLVED_VERSION
