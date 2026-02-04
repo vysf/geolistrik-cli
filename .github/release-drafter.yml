@@ -1,5 +1,5 @@
-name-template: "$GITHUB_REF_NAME"
-tag-template: "$GITHUB_REF_NAME"
+name-template: "{$GITHUB_REF_NAME}"
+tag-template: "{$GITHUB_REF_NAME}"
 version-resolver:
   major:
     labels:
@@ -42,7 +42,7 @@ categories:
 change-template: "- $TITLE by @$AUTHOR (#$NUMBER)"
 
 template: |
-  ## $NAME
+  ## $NAME [$NAME]: https://github.com/$OWNER/$REPOSITORY/releases/tag/GITHUB_REF_NAME
   $CHANGES
 
   [$NAME]: https://github.com/$OWNER/$REPOSITORY/releases/tag/GITHUB_REF_NAME
