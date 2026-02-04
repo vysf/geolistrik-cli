@@ -13,18 +13,30 @@ OutputBaseFilename=geolistriksetup-{#MyAppVersion}
 OutputDir=output
 Compression=lzma
 SolidCompression=yes
-PrivilegesRequired=admin
+PrivilegesRequired=lowest
 VersionInfoVersion={#MyAppVersionInfo}
 VersionInfoCompany=Yusuf Umar Al Hakim
 VersionInfoDescription=Geolistrik CLI App
 VersionInfoProductName=Geolistrik
 VersionInfoProductVersion={#MyAppVersion}
 SetupIconFile=assets\icon.ico
+WizardStyle=modern
+
+[Languages]
+Name: "english"; MessagesFile: "compiler:Default.isl"
+
+[Tasks]
+Name: "addtopath"; \
+Description: "Add Geolistrik to PATH environment variable (Recommended)"; \
+Flags: checkedonce
+
+Name: "opendocs"; \
+Description: "Open documentation after installation"; \
+Flags: unchecked
 
 [Files]
 Source: "build\__main__.exe"; DestDir: "{app}"; DestName: "geolistrik.exe"; Flags: ignoreversion
 Source: "assets\icon.ico"; DestDir: "{app}"; Flags: ignoreversion
-; Source: "README.md"; DestDir: "{app}"; Flags: ignoreversion isreadme
 
 [Icons]
 Name: "{group}\Geolistrik CLI"; Filename: "{app}\geolistrik.exe"; IconFilename: "{app}\icon.ico"
@@ -32,56 +44,83 @@ Name: "{group}\Command Prompt (Geolistrik)"; Filename: "{cmd}"; Parameters: "/K 
 Name: "{group}\Uninstall Geolistrik"; Filename: "{uninstallexe}"; IconFilename: "{app}\icon.ico"
 
 [Code]
-uses
-  Windows, Messages, SysUtils;
+const
+  WM_SETTINGCHANGE = $001A;
+  DocsURL = 'https://github.com/vysf/geolistrik-cli';
 
-{ ---- Fungsi Utility ---- }
-function IsEnvPathVariableContaining(const VarName, Value: string): Boolean;
+procedure AddToPath(Path: string);
 var
-  EnvValue: string;
+  Paths: string;
 begin
-  EnvValue := GetEnv(VarName);
-  Result := Pos(LowerCase(Value), LowerCase(EnvValue)) > 0;
+  if not RegQueryStringValue(HKCU, 'Environment', 'Path', Paths) then
+    Paths := '';
+
+  if Pos(Path, Paths) = 0 then
+  begin
+    if paths <> '' then
+      Paths := Paths + ';';
+    Paths := Paths + Path;
+
+    RegWriteStringValue(HKCU, 'Environment', 'Path', Paths);
+  end;
 end;
 
-procedure AddToPath(const Value: string);
+procedure RemoveFromPath(Path: string);
 var
-  OldPath: string;
+  Paths: string;
+  Items: TStringList;
+  I: Integer;
 begin
-  OldPath := GetEnv('PATH');
-  if (OldPath = '') or (OldPath[Length(OldPath)] <> ';') then
-    OldPath := OldPath + ';';
-  RegWriteStringValue(HKEY_CURRENT_USER,
-                      'Environment',
-                      'PATH',
-                      OldPath + Value);
+  if not RegQueryStringValue(HKCU, 'Environment', 'Path', Paths) then
+    Exit;
+  
+  Items := TStringList.Create;
+  try
+    Items.Delimiter := ';';
+    Items.StrictDelimiter := True;
+    Items.DelimitedText := Paths;
+
+    for I := Items.Count - 1 downto 0 do
+      if CompareText(Trim(Items[I]), Path) = 0 then
+        Items.Delete(I);
+
+    RegWriteStringValue(HKCU, 'Environment', 'Path', Items.DelimitedText);
+  finally
+    Items.Free;
+  end;
 end;
 
 procedure RefreshEnvironment;
-var
-  R: Integer;
 begin
-  SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0,
-                     LPARAM(PChar('Environment')), SMTO_ABORTIFHUNG, 5000, R);
+  SendMessage(HWND_BROADCAST, WM_SETTINGCHANGE, 0, 0);
 end;
 
-{ ---- Main Post-Install ---- }
 procedure CurStepChanged(CurStep: TSetupStep);
 var
-  NewPath: string;
+  ResultCode: Integer;
 begin
   if CurStep = ssPostInstall then
   begin
-    NewPath := ExpandConstant('{app}');
-    { Tambahkan PATH hanya jika belum ada }
-    if not IsEnvPathVariableContaining('PATH', NewPath) then
+    { Add to PATH }
+    if wizardIsTaskSelected('addtopath') then
     begin
-      AddToPath(NewPath);
+      AddToPath(ExpandConstant('{app}'));
       RefreshEnvironment;
     end;
 
-    MsgBox('Geolistrik CLI sudah siap digunakan dari Command Prompt.'#13#10 +
-           'Path telah otomatis ditambahkan (untuk pengguna baru).',
-           mbInformation, MB_OK);
+    { Open documentation }
+    if wizardIsTaskSelected('opendocs') then
+    begin
+      ShellExec('open', DocsURL, '', '', SW_SHOWNORMAL, ewNoWait, ResultCode);
+    end;
+  end;
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+  if CurUninstallStep = usPostUninstall then
+  begin
+    RemoveFromPath(ExpandConstant('{app}'));
+    RefreshEnvironment;
   end;
 end;
