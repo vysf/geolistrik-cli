@@ -1,5 +1,5 @@
-name-template: "v$RESOLVED_VERSION"
-tag-template: "v$RESOLVED_VERSION"
+name-template: "$GITHUB_REF_NAME"
+tag-template: "$GITHUB_REF_NAME"
 version-resolver:
   major:
     labels:
@@ -45,4 +45,4 @@ template: |
   ## $NAME
   $CHANGES
 
-  [$NAME]: https://github.com/$OWNER/$REPOSITORY/releases/tag/v$RESOLVED_VERSION
+  [$NAME]: https://github.com/$OWNER/$REPOSITORY/releases/tag/GITHUB_REF_NAME
