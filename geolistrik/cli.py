@@ -1,17 +1,5 @@
-import os
 import sys
-import argparse
-import threading
-
-from geolistrik.commands import generate, update
-from geolistrik.utils.update_cli import update_cli
-from geolistrik.utils.check_update import check_update
-from geolistrik.config import APP_NAME, VERSION, AUTHOR, CONTACT, WEBSITE, REPO
-
 from rich.console import Console
-from rich.panel import Panel
-from rich.text import Text
-
 if sys.stdout.encoding.lower() != 'utf-8':
     console = Console(legacy_windows=True)
 else:
@@ -27,6 +15,8 @@ banner = f"""
 """
 
 def show_welcome():
+    from geolistrik.config import APP_NAME, VERSION, WEBSITE
+    from rich.text import Text
     welcome_msg = Text()
     welcome_msg.append(banner, style="bold magenta")
     welcome_msg.append("\n\n")
@@ -46,9 +36,12 @@ def show_welcome():
     welcome_msg.append("  dd  - Dipole Dipole\n\n")
 
     welcome_msg.append(f"🔗 Full documentation: {WEBSITE}")
+
+    from rich.panel import Panel
     console.print(Panel(welcome_msg, title=f"[bold magenta]{APP_NAME}", expand=False))
 
 def main():
+    import argparse
     parser = argparse.ArgumentParser(
     prog="geolistrik",
     description="CLI tool for generating stacking charts and geoelectrical survey tables.",
@@ -56,6 +49,8 @@ def main():
     )
 
     subparsers = parser.add_subparsers(dest="command")
+
+    from geolistrik.commands import generate, update
 
     # register commands
     generate.register_subcommand(subparsers)
@@ -67,6 +62,9 @@ def main():
         show_welcome()
 
         # run check_update() in the background
+        from geolistrik.utils.check_update import check_update
+        import threading
+
         t = threading.Thread(target=check_update, daemon=False)
         t.start()
         t.join(timeout=1)
