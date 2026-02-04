@@ -32,7 +32,7 @@ categories:
 change-template: "- $TITLE by @$AUTHOR (#$NUMBER)"
 
 template: |
-  ## $TAG
+  ## $NAME
   $CHANGES
 
-  [$TAG]: https://github.com/vysf/geolistrik-cli/releases/tag/$TAG
+  [$NAME]: https://github.com/${{ github.repository }}/releases/tag/$TAG
