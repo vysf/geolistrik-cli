@@ -123,17 +123,40 @@ def update_windows(version):
     if not installer_path:
         console.print("[red]Download failed. Aborting update.[/red]")
         return
+        
+    # Tentukan path exe lama
+    install_dir = os.path.join(os.environ.get("ProgramFiles(x86)", "C:\\Program Files (x86)"), "Geolistrik")
+    exe_path = os.path.join(install_dir, "geolistrik.exe")
+    
+    # Backup exe lama (opsional)
+    if os.path.exists(exe_path):
+        backup_path = exe_path + ".bak"
+        try:
+            shutil.move(exe_path, backup_path)
+            console.print(f"[cyan]Backup of old executable created: {backup_path}[/cyan]")
+        except OSError as e:
+            console.print(f"[yellow]Failed to backup old executable: {e}[/yellow]")
 
-    console.print("[blue]Running installer...[/blue]")
-    console.print("[blue]Please restart terminal and follow the installer to complete the update.[/blue]")
-
+    console.print("[blue]Update downloaded successfully.[/blue]")
+    console.print("[blue]Closing CLI and running installer...[/blue]")
+    
+    # Exit CLI agar installer bisa menimpa exe lama
     try:
-        subprocess.run([installer_path], check=True)
-    except subprocess.CalledProcessError as e:
-        console.print(f"[red]Installer failed: {e}[/red]")
+        # Jalankan installer di proses baru sebelum exit
+        subprocess.Popen(
+            [installer_path],
+            shell=False,  # tidak perlu shell=True
+            close_fds=True
+        )
+        sys.exit(0)
+    except Exception as e:
+        console.print(f"[red]Failed to launch installer: {e}[/red]")
     finally:
         if os.path.exists(installer_path):
-            os.remove(installer_path)
+            try:
+                os.remove(installer_path)
+            except OSError:
+                pass
 
 def update_linux(version):
     """CLI update on Linux"""

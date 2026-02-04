@@ -6,19 +6,28 @@
 AppName={#AppName}
 AppVersion={#MyAppVersion}
 AppPublisher=Yusuf Umar Al Hakim
+
 DefaultDirName={pf}\{#AppName}
+DisableDirPage=yes
 DefaultGroupName={#AppName}
+
 UninstallDisplayIcon={app}\geolistrik.exe
 OutputBaseFilename=geolistriksetup-{#MyAppVersion}
 OutputDir=output
+
 Compression=lzma
 SolidCompression=yes
-PrivilegesRequired=lowest
+
+PrivilegesRequired=admin
+CloseApplications=yes
+RestartApplications=no
+
 VersionInfoVersion={#MyAppVersionInfo}
 VersionInfoCompany=Yusuf Umar Al Hakim
 VersionInfoDescription=Geolistrik CLI App
 VersionInfoProductName=Geolistrik
 VersionInfoProductVersion={#MyAppVersion}
+
 SetupIconFile=assets\icon.ico
 WizardStyle=modern
 
@@ -95,12 +104,36 @@ begin
   SendMessage(HWND_BROADCAST, WM_SETTINGCHANGE, 0, 0);
 end;
 
+procedure BackupOldExe;
+var
+  ExePath, BackupPath: string;
+begin
+  ExePath := ExpandConstant('{app}\geolistrik.exe');
+  BackupPath := ExePath + '.bak';
+  if FileExists(ExePath) then
+  begin
+    if FileExists(BackupPath) then
+      DeleteFile(BackupPath);
+    RenameFile(ExePath, BackupPath);
+  end;
+end;
+
 procedure CurStepChanged(CurStep: TSetupStep);
 var
   ResultCode: Integer;
 begin
   if CurStep = ssPostInstall then
   begin
+    { Kill current geolistrik.exe if running from app folder }
+    Exec(
+      'taskkill',
+      '/F /IM geolistrik.exe',
+      '',
+      SW_HIDE,
+      ewWaitUntilTerminated,
+      ResultCode
+    );
+
     { Add to PATH }
     if wizardIsTaskSelected('addtopath') then
     begin
