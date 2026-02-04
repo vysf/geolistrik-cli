@@ -79,8 +79,6 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
-          body: |
-            ${{ github.event.release.body }}
           files: |
             release-files/geolistriksetup-*.exe
             release-files/geolistrik-linux-*
