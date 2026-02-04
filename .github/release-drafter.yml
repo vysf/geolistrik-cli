@@ -1,5 +1,5 @@
-name-template: "v$NEXT_MAJOR_VERSION.$NEXT_MINOR_VERSION.$NEXT_PATCH_VERSION"
-tag-template: "v$NEXT_MAJOR_VERSION.$NEXT_MINOR_VERSION.$NEXT_PATCH_VERSION"
+name-template: "${TAG_NAME}"
+tag-template: "${TAG_NAME}"
 
 categories:
   - title: "### Added"
@@ -32,7 +32,7 @@ categories:
 change-template: "- $TITLE by @$AUTHOR (#$NUMBER)"
 
 template: |
-  ## [$NEXT_VERSION]
+  ## ${TAG_NAME}
   $CHANGES
 
-  [$NEXT_VERSION]: https://github.com/vysf/geolistrik-cli/releases/tag/v$NEXT_VERSION
+  [${TAG_NAME}]: https://github.com/vysf/geolistrik-cli/releases/tag/${TAG_NAME}
