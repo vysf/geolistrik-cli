@@ -79,8 +79,11 @@ Hasil disimpan dalam `.png` dan `.xlsx`.
 
 📦 [Download Installer](https://github.com/vysf/geolistrik-cli/releases)
 
-1. Jalankan installer, ikuti petunjuk. 
-2. Setelah instalasi selesai, tambahkan folder:
+> Jalankan installer, ikuti petunjuk. 
+
+Restart CMD, dan Geolistrik CLI siap digunakan. Namun, jika Kamu secara tidak sengaja menghapus centang pada kotak `Add Geolistrik to PATH environment variable (Recommended)`, maka Kamu dapat menambahkan PATH secara manual dengan mengikuti petunjuk di bawah ini:
+
+1. Setelah instalasi selesai, tambahkan folder (ini lah folder cli kamu terinstall):
    ```
    C:\Program Files (x86)\Geolistrik
    ```
@@ -96,13 +99,13 @@ Hasil disimpan dalam `.png` dan `.xlsx`.
    - Tutup semua kota dialog dengan klik `OK` untuk menyimpan perubahan mu.
    - Restart terminal untuk memastikan perubahan PATH berlaku.
 
-3. Buka CMD dan ketik:
+2. Buka CMD dan ketik:
    ```cmd
    geolistrik
    ```
    Kamu akan melihat welcome banner:
    ![welcome](welcome-message.png)
-4. Uninstall:
+3. Uninstall:
    - uninstall lewat **Control Panel → Uninstall a Program**
    - Hapus path yang path dari [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/)
 
@@ -144,7 +147,7 @@ Umumnya `~/.local/bin` atau `/usr/local/bin` (butuh `sudo` untuk global install)
       ```
       Maka sama seperti diatas, kamu akan melihat `welcome banner`.
 3. Uninstall
-cukup hapus `/usr/local/bin/geolistrik` dari komputer anda.
+cukup hapus `/usr/local/bin/geolistrik` dari komputer kamu.
    ```
    sudo rm /usr/local/bin/geolistrik
    ```
@@ -153,7 +156,7 @@ cukup hapus `/usr/local/bin/geolistrik` dari komputer anda.
 ### Cara Update
 1. Cek update lewat `geolistrik` atau `geolistrik --version`
 2. Jika ada versi baru, buka: [GitHub Releases](https://github.com/vysf/geolistrik-cli/releases/latest)
-3. Download installer terbaru sesuai OS Anda
+3. Download installer terbaru sesuai OS kamu
 4. Jalankan installer (Windows) atau ganti file binary (Linux)
 
 
@@ -268,6 +271,11 @@ geolistrik update --version 1.0.1
 
 ---
 ## Catatan Untuk Pengguna yang Bermigrasi Dari v1
+
+>⚠️ Geolistrik CLI v1.x kini telah mencapai akhir masa pakainya (End-of-Life)
+Tidak akan ada pembaruan atau perbaikan bug lebih lanjut yang diberikan. 
+
+Kalian dapat lakukan uninstall versi 1 dan download versi 2 di [Cara Instalasi](#cara-instalasi).
 
 Pada v1, parameter diberikan sebagai argumen posisional:
 ```bash

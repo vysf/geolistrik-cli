@@ -81,12 +81,15 @@ It saves outputs in `.png` (chart) and `.xlsx` (data) formats.
 
 📦 [Download Installer](https://github.com/vysf/geolistrik-cli/releases)
 
-1. Run the installer and follow the instructions.
-2. After the installation is complete, manually add the following folder:
+> Run the installer and follow the instructions.
+
+Restart the CMD, and the Geolistrik CLI is ready to use. But if you accidentally uncheck the `Add Geolistrik to PATH environment variable (Recommended)` box, then you can add the PATH manually by following the instruction below:
+
+1. After the installation is complete, add the following folder (this where you install the cli):
    ```
    C:\Program Files (x86)\Geolistrik
    ```
-   to your [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/) manually. This the tutorial:   
+   to your [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/). This the tutorial:   
    - Click Start, type "env", and select `Edit the system environment variables`
    ![system environment variables](/docs/search_env.png)
    - In the System Properties window, click the `Environment Variables…` button
@@ -97,14 +100,14 @@ It saves outputs in `.png` (chart) and `.xlsx` (data) formats.
    ![modify environtment variable](/docs/modify_environtment_variable_new.png)
    - Close all dialogue boxes by clicking `OK` to save your changes
    - Restart terminal to ensure the PATH changes take effect
-3. Open CMD and type:
+2. Open CMD and type:
    ```cmd
    geolistrik
    ```
    You'll see the welcome banner:
    ![welcome](docs/welcome-message.png)
 
-4. Uninstall:
+3. Uninstall:
    - Uninstall via **Control Panel → Uninstall a Program**
    - Remove the path entry from the [**system PATH**](https://www.bodhost.com/kb/how-to-add-to-the-path-on-windows-10-and-windows-11/)
 
@@ -263,6 +266,11 @@ geolistrik update --version 1.0.1
 
 ---
 ## Notes for Users Migrating from v1
+
+>⚠️ Geolistrik CLI v1.x is now End-of-Life
+No further updates or bug fixes will be provided.
+
+You can uninstall version 1 and download version 2 on [Installation Guide](#installation-guide).
 
 In version v1, parameters were provided as positional arguments:
 ```bash
