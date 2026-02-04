@@ -1,5 +1,5 @@
-name-template: "${TAG_NAME}"
-tag-template: "${TAG_NAME}"
+name-template: "$TAG"
+tag-template: "$TAG"
 
 categories:
   - title: "### Added"
@@ -32,7 +32,7 @@ categories:
 change-template: "- $TITLE by @$AUTHOR (#$NUMBER)"
 
 template: |
-  ## ${TAG_NAME}
+  ## $TAG
   $CHANGES
 
-  [${TAG_NAME}]: https://github.com/vysf/geolistrik-cli/releases/tag/${TAG_NAME}
+  [$TAG]: https://github.com/vysf/geolistrik-cli/releases/tag/$TAG
