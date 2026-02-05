@@ -1,0 +1,2 @@
+class GeolistrikError(Exception):
+  pass
