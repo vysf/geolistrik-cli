@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from domain.entities.survey_line import SurveyLine
-from domain.entities.measurement import Measurement
-from domain.entities.electrode import Electrode
+from geolistrik.domain.entities.survey_line import SurveyLine
+from geolistrik.domain.entities.measurement import Measurement
+from geolistrik.domain.entities.electrode import Electrode
 
 @dataclass(frozen=True)
 class ArrayResult:

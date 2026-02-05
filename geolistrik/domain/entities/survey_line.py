@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from decimal import Decimal
+from geolistrik.domain.errors.invariant_error import InvariantError
 
 @dataclass(frozen=True)
 class SurveyLine:
@@ -13,13 +14,13 @@ class SurveyLine:
     spacing = float(self.spacing)
 
     if x_start == x_end:
-        raise ValueError("x_start and x_end must be different")
+        raise InvariantError("x_start and x_end must be different")
 
     if spacing <= 0:
-        raise ValueError("spacing must be > 0")
+        raise InvariantError("spacing must be > 0")
 
     if spacing >= abs(x_end - x_start):
-        raise ValueError("spacing must be smaller than line length")
+        raise InvariantError("spacing must be smaller than line length")
 
     object.__setattr__(self, "x_start", x_start)
     object.__setattr__(self, "x_end", x_end)
@@ -27,10 +28,12 @@ class SurveyLine:
 
   def positions(self) -> list[float]:
     direction = 1 if self.x_end > self.x_start else -1
-    length = abs(self.x_end - self.x_start)
 
-    step = Decimal(str(self.spacing))
     start = Decimal(str(self.x_start))
+    end = Decimal(str(self.x_end))
+    step = Decimal(str(self.spacing))
+
+    length = abs(end - start)
 
     count = int(length / step) + 1
 

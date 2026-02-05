@@ -158,6 +158,9 @@ geolistrik/
 
 ├── cli/                     # Interface Adapter (CLI layer)
 │   ├── __init__.py
+│   ├── errors/
+│   │   ├── __init__.py
+│   │   └── user_error.py
 │   ├── app.py               # CLI dispatcher / router
 │   ├── commands/            # Setiap command CLI
 │   │   ├── __init__.py
@@ -171,14 +174,22 @@ geolistrik/
 │   ├── __init__.py
 │   ├── generate_config.py   # Use case: generate konfigurasi elektroda
 │   ├── generate_stack.py    # Use case: stacking data
-│   └── plot_result.py       # Orkestrasi plotting (tanpa matplotlib langsung)
+│   ├── plot_result.py       # Orkestrasi plotting (tanpa matplotlib langsung)
+│   ├── errors/
+│       ├── __init__.py
+│       └── usecase_error.py
 
 ├── domain/                  # Enterprise business rules (PURE)
 │   ├── __init__.py
 │   ├── electrode.py         # Entity
 │   ├── array_type.py        # Wenner, Schlumberger, Dipole
 │   ├── geometry.py          # Perhitungan jarak & posisi
-│   └── formula.py           # Rumus resistivitas (tanpa numpy!)
+│   ├── formula.py           # Rumus resistivitas (tanpa numpy!)
+│   ├── errors/              # domain custom error
+│       ├── __init__.py
+│       ├── base.py             # base error
+│       ├── invariant_error.py  # error untuk kesalahan aturan internal domain
+│       └── domain_error.py     # error untuk logic gagal, tapi input valid
 
 ├── infrastructure/          # Frameworks & drivers
 │   ├── __init__.py
@@ -202,6 +213,7 @@ geolistrik/
     ├── __init__.py
     └── validation.py
 ```
+### Penjelasan Folder
 
 | Folder         | Deskripsi                                                                 | Lazy-load | Dependency ke layer lain |
 |----------------|---------------------------------------------------------------------------|-----------|--------------------------|
@@ -211,3 +223,45 @@ geolistrik/
 | infrastructure | Implementasi teknis (numpy, matplotlib, file, OS, network)                | Ya        | Ke domain abstractions |
 | factories      | Dependency wiring & lazy creation                                          | Ya        | Ke infrastructure |
 | utils          | Helper ringan & murni (validasi, formatting, mapping sederhana)            | Tidak     | Minimal / netral |
+
+### Penjelasan Custom Error
+| Layer          | Jenis error                 | Contoh                          |
+| -------------- | --------------------------- | ------------------------------- |
+| domain         | InvariantError, DomainError | spacing negatif, survey invalid |
+| usecases       | UseCaseError                | konflik workflow                |
+| infrastructure | InfraError                  | gagal simpan file, gagal plot   |
+| cli            | UserError                   | input salah, argumen hilang     |
+
+### Alur Error yang baik
+```
+Domain
+  └─ raise InvariantError
+        ↓
+Usecase
+  └─ (optional) catch & wrap
+        ↓
+CLI
+  └─ translate → UserError
+```
+
+### Strategi Skenario Testing
+| Layer          | Strategi            |
+| -------------- | ------------------- |
+| domain         | ✅ fail-first        |
+| usecases       | ⚖️ mixed            |
+| cli            | ❌ mostly happy-path |
+| infrastructure | ❌ integration-first |
+
+
+## Pengingat
+last commit: 05/02/2026
+Yang telah dilakukan:
+1. buat domain
+2. buat custom error
+3. buat testing
+
+Yang harus dilakukan kedepan:
+1. lanjutkan domain semua konfigurasi
+2. tes ulang algoritma konfigurasi
+3. pastikan skenario sudah tepat
+4. perbaikan baru sampe layer domain

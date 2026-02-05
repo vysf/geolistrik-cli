@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Optional
-from domain.entities.electrode import Electrode
+from geolistrik.domain.entities.electrode import Electrode
 
 @dataclass(frozen=True)
 class Measurement:

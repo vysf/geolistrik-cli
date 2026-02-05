@@ -1,5 +1,6 @@
 import pytest
 from geolistrik.domain.entities.electrode import Electrode
+from geolistrik.domain.errors.invariant_error import InvariantError
 
 def test_electrode_accepts_float():
   e = Electrode(10.5)
@@ -10,5 +11,5 @@ def test_electrode_casts_int_to_float():
   assert isinstance(e.x, float)
 
 def test_electrode_rejects_non_numeric():
-  with pytest.raises(TypeError):
+  with pytest.raises(InvariantError):
     Electrode("10")
