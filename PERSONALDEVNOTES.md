@@ -124,3 +124,57 @@ Tujuan fitur baru adalah membuat proses panjang yang rumit menjadi singkat nan m
 4. command nuitkan diubah dari --onefile menjadi --one-dir. Strategi upgrade dan downgrade perlu diperbaiki, replace folder ketimbang replace file artinya copy seluruh folder.
 5. strategi setup setelah install: windows cukup copy folder. linux perlu copy folder dan sysmlink. buat lebih ux friendly.
 6. Sesuaikan kembali `update_cli.py` dan `geolistrik_setup.iss`
+
+## UPDATE POIN 1,2,3
+
+```
+geolistrik/
+├── __main__.py              # Composition root (lazy load dimulai di sini)
+├── __init__.py
+
+├── cli/                     # Interface Adapter (CLI layer)
+│   ├── __init__.py
+│   ├── app.py               # CLI dispatcher / router
+│   ├── commands/            # Setiap command CLI
+│   │   ├── __init__.py
+│   │   ├── wenner.py
+│   │   ├── schlumberger.py
+│   │   ├── dipole_dipole.py
+│   │   └── help.py
+│   └── args.py              # argparse / click config
+
+├── usecases/                # Application business rules
+│   ├── __init__.py
+│   ├── generate_config.py   # Use case: generate konfigurasi elektroda
+│   ├── generate_stack.py    # Use case: stacking data
+│   └── plot_result.py       # Orkestrasi plotting (tanpa matplotlib langsung)
+
+├── domain/                  # Enterprise business rules (PURE)
+│   ├── __init__.py
+│   ├── electrode.py         # Entity
+│   ├── array_type.py        # Wenner, Schlumberger, Dipole
+│   ├── geometry.py          # Perhitungan jarak & posisi
+│   └── formula.py           # Rumus resistivitas (tanpa numpy!)
+
+├── infrastructure/          # Frameworks & drivers
+│   ├── __init__.py
+│   ├── plotting/
+│   │   ├── __init__.py
+│   │   └── matplotlib_plotter.py
+│   ├── export/
+│   │   ├── __init__.py
+│   │   ├── csv_exporter.py
+│   │   └── image_exporter.py
+│   └── numeric/
+│       ├── __init__.py
+│       └── numpy_backend.py
+
+├── factories/               # Dependency wiring (lazy)
+│   ├── __init__.py
+│   ├── plotter_factory.py
+│   └── numeric_factory.py
+
+└── utils/                   # Helper ringan
+    ├── __init__.py
+    └── validation.py
+```
