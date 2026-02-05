@@ -49,6 +49,30 @@ GitHub Action baca label PR dan update RESOLVED_VERSION otomatis.
 5. Job release (`.github/workflow/release.yml`) hanya akan berjalan apabila ada tag baru yang ditambahakan.
 6. Selalu buat tag yang sama dengan draft version!.
 7. Pahami dulu [Release Drafter](https://github.com/marketplace/actions/release-drafter) jangan langsung ke AI.
+8. Testing menggunakan pytest dan coverage, bisa jalankan:
+    ```
+    pytest
+    ```
+    untuk liat keberhasilan test. \
+    atau 
+    ```
+    pytest --cov=geolistrik/domain --cov-report=term-missing
+    ```
+    untuk liat keberhasilan dan coverage nya juga. 
+    Bisa ubah `--cov` jadi `geolistrik` untuk semua folder di sana. \
+    sepertinya kita bisa pertimbangkan ini untuk CI
+    ```
+    pytest --cov=geolistrik/domain --cov-fail-under=90
+    ```
+    Arti command
+    | Command                                                    | Artinya                              |
+    | ---------------------------------------------------------- | ------------------------------------ |
+    | `pytest`                                                   | test saja                            |
+    | `pytest --cov=geolistrik/domain`                           | test + hitung coverage               |
+    | `pytest --cov=geolistrik/domain --cov-report=term`         | tampilkan % di terminal              |
+    | `pytest --cov=geolistrik/domain --cov-report=term-missing` | tampilkan % + baris yang belum dites |
+    | `pytest --cov=geolistrik/domain --cov-report=html`         | bikin laporan HTML                   |
+
 
 ---
 
@@ -178,3 +202,12 @@ geolistrik/
     ├── __init__.py
     └── validation.py
 ```
+
+| Folder         | Deskripsi                                                                 | Lazy-load | Dependency ke layer lain |
+|----------------|---------------------------------------------------------------------------|-----------|--------------------------|
+| domain         | Pure business rules: elektroda, geometri, formula resistivitas (tanpa lib eksternal) | Tidak relevan | Tidak (paling dalam) |
+| usecases       | Application logic: orkestrasi domain + interface (bukan implementasi)      | Tidak     | Ke domain + abstraction |
+| cli            | Interface Adapter: parsing arg & trigger usecase                           | Ya        | Ke usecases + factories |
+| infrastructure | Implementasi teknis (numpy, matplotlib, file, OS, network)                | Ya        | Ke domain abstractions |
+| factories      | Dependency wiring & lazy creation                                          | Ya        | Ke infrastructure |
+| utils          | Helper ringan & murni (validasi, formatting, mapping sederhana)            | Tidak     | Minimal / netral |
